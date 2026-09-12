@@ -50,7 +50,7 @@
   "publisher": { "@type": "Organization", "name": "Safran", "url": "https://www.safranapp.com/", "email": "support@safranapp.com" }
 }
 </script>
-<meta name="theme-color" content="#FDF7E7" />
+<meta name="theme-color" content="#ECE6ED" />
 <meta http-equiv="Cache-Control" content="no-cache" />
 <link rel="stylesheet" href="/assets/site.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -61,12 +61,9 @@
     --ink: #52514C; --ink-muted: #84827E; --bg: #FDF7E7; --accent: #F9E27D;
     --protein: #BD5536; --carbs: #D6A12E; --fat: #8A5A86; --green: #2E7D4F;
   }
-  /* Cream on <html> only. <body> has NO background: the fixed -z-10 canvas
-     must never be covered by a body-level background. The CSS .mesh is added
-     to <body> by pageGradient only when WebGL is unavailable. */
+  /* The page background: one fixed mesh gradient on <html>, brand pastels
+     over cream. <body> stays transparent so it never covers it. */
   html {
-    /* the static mesh, identical stops to the WebGL layer: what you see for
-       the few frames before the canvas is up is already the right picture */
     background:
       radial-gradient(50% 50% at -20% -20%, #E5FAFBeb 0%, #E5FAFB81 55%, transparent 100%),
       radial-gradient(50% 50% at 90% 10%,   #E6DFF1eb 0%, #E6DFF181 55%, transparent 100%),
@@ -189,7 +186,6 @@
     .include-body { grid-template-rows: 1fr; opacity: 1; margin-top: .6rem; }
   }
 
-  #page-gl { opacity: 0; transition: opacity .35s ease; }
 
   /* Recipes: the cards are fanned like a hand of cards, on every screen size.
      Each card gets its own --tx/--ty/--rot.
@@ -328,9 +324,6 @@
 </style>
 </head>
 <body class="antialiased selection:bg-[#F9E27D] selection:text-[#52514C]">
-<!-- page-wide moving gradient (WebGL, see pageGradient). Fixed behind all
-     content. When it cannot run, pageGradient adds .mesh to <body> instead. -->
-<canvas id="page-gl" class="fixed inset-0 w-full h-full pointer-events-none -z-10" aria-hidden="true"></canvas>
 
 <!-- ============ CAPSULE NAV (menu capsule + standalone lang & CTA) ============ -->
 <nav class="fixed left-1/2 -translate-x-1/2 top-4 sm:top-6 z-50 w-[calc(100%-2rem)] sm:w-auto">
@@ -1349,98 +1342,6 @@ function wrapWords(root) {
 
 
 /* ============================ page gradient ============================ */
-/* The app's MeshBackground, live: cream base with the five radial blooms from
- * the spec (same colours, centres, radii, 92% peak, 0.55 mid-stop, soft rim),
- * composited in the same order. Each bloom drifts on its own slow Lissajous
- * path and breathes a little, so the page feels alive without ever leaving
- * the app's palette. Fine grain on top. Fixed behind the whole page; renders
- * while the tab is visible; skipped for prefers-reduced-motion or without
- * WebGL (the body's CSS .mesh then shows). */
-const PAGE_GRADIENT = {
-  speed: 0.06,   // drift pace; 0.03 barely moves, 0.12 clearly flows
-  drift: 0.07,   // how far a bloom wanders, as a fraction of the viewport
-  breathe: 0.08, // radius change, fraction of the bloom radius
-  grain: 0.045,  // film grain strength (0 = off)
-  base: '#FDF7E7',
-  // exactly MeshBackground.STOPS, in paint order: [colour, x, y, r]
-  stops: [
-    ['#DECDEC', 0.5, 0.5, 0.6],   // lilac bloom, centre
-    ['#E5FAFB', -0.2, -0.2, 0.5], // mint, top-left
-    ['#E6DFF1', 0.9, 0.1, 0.5],   // lilac, top-right
-    ['#FEF8DC', -0.1, 0.8, 0.55], // pale yellow, bottom-left
-    ['#FFDCE9', 0.85, 0.9, 0.5],  // pink, bottom-right
-  ],
-};
-(function pageGradient() {
-  const fallback = () => document.body.classList.add('mesh');
-  const canvas = document.getElementById('page-gl');
-  if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return fallback();
-  const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'low-power' });
-  if (!gl) return fallback();
-  const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0., 1.); }`;
-  const fs = `
-    precision highp float;
-    uniform vec2 u_res; uniform float u_t, u_drift, u_breathe, u_grain;
-    uniform vec3 u_base;
-    uniform vec3 u_col[5]; uniform vec3 u_pos[5];   // pos = (x, y, r) in viewport fractions
-    const float PEAK = 0.92;
-    float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
-    // the spec's three-stop radial: PEAK at centre, PEAK*.55 at 55%, 0 at the rim
-    float bloom(float d){
-      float a = d < 0.55 ? mix(PEAK, PEAK * 0.55, d / 0.55) : mix(PEAK * 0.55, 0.0, (d - 0.55) / 0.45);
-      return clamp(a, 0.0, 1.0);
-    }
-    void main(){
-      vec2 uv = gl_FragCoord.xy / u_res; uv.y = 1.0 - uv.y;          // y down, like the app
-      float base = max(u_res.x, u_res.y);
-      vec3 col = u_base;
-      for (int i = 0; i < 5; i++) {
-        float fi = float(i);
-        // slow Lissajous drift, unique per bloom, plus a gentle breathe
-        vec2 c = u_pos[i].xy + u_drift * vec2(sin(u_t * (0.7 + 0.13 * fi) + fi * 1.9), cos(u_t * (0.55 + 0.11 * fi) + fi * 0.8));
-        float r = u_pos[i].z * (1.0 + u_breathe * sin(u_t * (0.4 + 0.07 * fi) + fi * 2.3));
-        vec2 px = (uv - c) * u_res;                                    // pixel offset from centre
-        float d = length(px) / (r * base);
-        float a = d < 1.0 ? bloom(d) : 0.0;
-        col = mix(col, u_col[i], a);                                   // alpha-over, spec order
-      }
-      float g = (hash(gl_FragCoord.xy + fract(u_t * 37.0)) - 0.5) * u_grain;
-      gl_FragColor = vec4(col + g, 1.0);
-    }`;
-  const compile = (type, src) => { const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return sh; };
-  const prog = gl.createProgram();
-  gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
-  gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { console.warn('page gradient:', gl.getProgramInfoLog(prog)); return fallback(); }
-  gl.useProgram(prog);
-  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-  const U = (n) => gl.getUniformLocation(prog, n);
-  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
-  gl.uniform3fv(U('u_base'), hex(PAGE_GRADIENT.base));
-  gl.uniform3fv(U('u_col[0]'), new Float32Array(PAGE_GRADIENT.stops.flatMap((st) => hex(st[0]))));
-  gl.uniform3fv(U('u_pos[0]'), new Float32Array(PAGE_GRADIENT.stops.flatMap((st) => [st[1], st[2], st[3]])));
-  gl.uniform1f(U('u_drift'), PAGE_GRADIENT.drift); gl.uniform1f(U('u_breathe'), PAGE_GRADIENT.breathe);
-  gl.uniform1f(U('u_grain'), PAGE_GRADIENT.grain);
-  const uRes = U('u_res'), uT = U('u_t');
-  function resize() {
-    const dpr = Math.min(devicePixelRatio || 1, 1.5);
-    const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
-    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h); gl.uniform2f(uRes, w, h); }
-  }
-  const start = performance.now();
-  function frame(now) {
-    if (!document.hidden) {
-      resize();
-      gl.uniform1f(uT, ((now - start) / 1000) * PAGE_GRADIENT.speed);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    }
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-  canvas.style.opacity = '1';
-})();
 
 /* ============================ boot ============================ */
 document.getElementById('lang-toggle').addEventListener('click', () => {
