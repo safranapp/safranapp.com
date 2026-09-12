@@ -78,19 +78,27 @@
     background-attachment: fixed;
   }
   html, body { overflow-x: clip; }
-  /* iOS Safari paints its top/bottom bars in ONE flat colour taken from the
-     page (background-color; it ignores <meta theme-color> here). A gradient
-     can't reach into that chrome, so instead the page fades into the same
-     colour at both viewport edges and the seam disappears. Phones only:
-     desktop has no bars and would just see a vignette. */
+
+  /* Phones: iOS Safari paints its top and bottom bars in ONE flat colour
+     sampled from background-color (it ignores <meta theme-color> here), and
+     a gradient cannot reach into that chrome. So on mobile the background is
+     a viewport-pinned layer that begins and ends in exactly that colour and
+     carries the brand pastels through the middle. Pinned, not scrolling, so
+     the two bands stay under the bars at every scroll position. */
   @media (max-width: 767px) {
+    html { background: #EFE8E9; }
     body::before {
       content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-      background: linear-gradient(to bottom,
-        #EFE8E9 0, rgba(239,232,233,0) 72px,
-        rgba(239,232,233,0) calc(100% - 96px), #EFE8E9 100%);
+      background:
+        radial-gradient(60% 22% at 14% 30%, #E5FAFBd9 0%, transparent 100%),
+        radial-gradient(60% 22% at 88% 44%, #E6DFF1d9 0%, transparent 100%),
+        radial-gradient(65% 22% at 10% 64%, #FEF8DCd9 0%, transparent 100%),
+        radial-gradient(60% 20% at 90% 78%, #FFDCE9d9 0%, transparent 100%),
+        linear-gradient(to bottom, #EFE8E9 0%, #F8F3EC 13%, #F8F3EC 87%, #EFE8E9 100%);
     }
   }
+
+
   body { font-family: 'Hanken Grotesk', system-ui, sans-serif; color: var(--ink); }
   .display { font-weight: 800; letter-spacing: -0.03em; }
   .serif-accent { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em;
