@@ -20,6 +20,17 @@ npx --yes tailwindcss@3 -c tailwind.config.js -i src/tailwind.css -o dist/assets
 # Stamp a build id into asset URLs so browsers never reuse a stale copy.
 BUILD_ID="$(date -u +%Y%m%d%H%M%S)"
 sed "s/__BUILD_ID__/${BUILD_ID}/g; s#/assets/site.css#/assets/site.css?v=${BUILD_ID}#g" index.html > dist/index.html
+# /nl: the same page with Dutch share tags baked in, because link scrapers
+# (WhatsApp, Slack, iMessage) never run the JS that switches the language.
+mkdir -p dist/nl
+sed -e 's#<meta property="og:image" content="https://www.safranapp.com/assets/og-image.png"#<meta property="og:image" content="https://www.safranapp.com/assets/og-image-nl.png"#' \
+    -e 's#<meta name="twitter:image" content="https://www.safranapp.com/assets/og-image.png"#<meta name="twitter:image" content="https://www.safranapp.com/assets/og-image-nl.png"#' \
+    -e 's#content="Safran – Your AI health coach"#content="Safran – Je AI health coach"#g' \
+    -e 's#content="Chat what you ate, snap a photo, import recipes from Instagram. Safran turns it into a plan that adjusts to your real life."#content="Typ wat je at, stuur een foto, importeer recepten van Instagram. Safran maakt er een plan van dat meebeweegt met je echte leven."#g' \
+    -e 's#<meta property="og:locale" content="en_US" />#<meta property="og:locale" content="nl_NL" />#' \
+    -e 's#<link rel="canonical" href="https://www.safranapp.com/" />#<link rel="canonical" href="https://www.safranapp.com/nl" />#' \
+    dist/index.html > dist/nl/index.html
+
 cp dist/index.html dist/privacy/index.html
 cp dist/index.html dist/terms/index.html
 cp dist/index.html dist/404.html

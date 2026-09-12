@@ -8,6 +8,11 @@
 <meta name="keywords" content="AI health coach, calorie tracker, food logging, macro tracker, meal plan, Safran" />
 <meta name="author" content="Safran" />
 <link rel="canonical" href="https://www.safranapp.com/" />
+<!-- The same page in two languages: / is English, /nl is Dutch (build.sh
+     writes it with Dutch meta tags). x-default sends everyone else to /. -->
+<link rel="alternate" hreflang="en" href="https://www.safranapp.com/" />
+<link rel="alternate" hreflang="nl" href="https://www.safranapp.com/nl" />
+<link rel="alternate" hreflang="x-default" href="https://www.safranapp.com/" />
 
 <!-- Icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
@@ -846,8 +851,11 @@ const SHARE_FN = 'https://xplvqnxxaqtsbdbsipps.supabase.co/functions/v1/shared-r
 const RECIPE_IMG = 'https://xplvqnxxaqtsbdbsipps.supabase.co/storage/v1/object/public/recipe-images/';
 
 /* ============================ language ============================ */
-let lang = localStorage.getItem('safran_lang') ||
-  ((navigator.language || '').toLowerCase().startsWith('nl') ? 'nl' : 'en');
+// /nl is a real page (build.sh writes it with Dutch meta tags, so shared
+// links preview in Dutch); landing there pins the language.
+let lang = location.pathname.replace(/\/$/, '').endsWith('/nl') ? 'nl'
+  : localStorage.getItem('safran_lang') ||
+    ((navigator.language || '').toLowerCase().startsWith('nl') ? 'nl' : 'en');
 function t(key) { return T[lang][key]; }
 function accentHtml(s) {
   return s.replace(/\|([^|]+)\|/g, '<br/><em class="serif-accent font-normal">$1</em>');
