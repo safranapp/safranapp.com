@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,9 +10,9 @@
 <link rel="canonical" href="https://www.safranapp.com/" />
 
 <!-- Icons -->
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
 
 <!-- Open Graph -->
 <meta property="og:site_name" content="Safran" />
@@ -32,31 +32,70 @@
 <meta name="twitter:description" content="Chat what you ate, snap a photo, import recipes from Instagram. Safran turns it into a plan that adjusts to your real life." />
 <meta name="twitter:image" content="https://www.safranapp.com/assets/og-image.png" />
 
-<meta name="apple-itunes-app" content="app-argument=https://www.safranapp.com/" />
+<meta name="apple-itunes-app" content="app-id=6794821755, app-argument=https://www.safranapp.com/" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "Safran: AI Nutrition Coach",
+  "alternateName": "Safran",
+  "operatingSystem": "iOS",
+  "applicationCategory": "HealthApplication",
+  "description": "The nutrition coach you simply text. Send a photo, scan a barcode or type what you ate; Safran counts calories and macros, gives honest feedback and adjusts your plan every week.",
+  "url": "https://www.safranapp.com/",
+  "image": "https://www.safranapp.com/assets/og-image.png",
+  "installUrl": "https://apps.apple.com/app/id6794821755",
+  "inLanguage": ["nl", "en"],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "description": "Free to try; Premium subscription with a 3-day free trial." },
+  "publisher": { "@type": "Organization", "name": "Safran", "url": "https://www.safranapp.com/", "email": "support@safranapp.com" }
+}
+</script>
 <meta name="theme-color" content="#FDF7E7" />
-<script src="https://cdn.tailwindcss.com"></script>
+<meta http-equiv="Cache-Control" content="no-cache" />
+<link rel="stylesheet" href="/assets/site.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <style>
   :root {
     --ink: #52514C; --ink-muted: #84827E; --bg: #FDF7E7; --accent: #F9E27D;
     --protein: #BD5536; --carbs: #D6A12E; --fat: #8A5A86; --green: #2E7D4F;
   }
-  html { background: var(--bg); }
+  /* Cream on <html> only. <body> has NO background: the fixed -z-10 canvas
+     must never be covered by a body-level background. The CSS .mesh is added
+     to <body> by pageGradient only when WebGL is unavailable. */
+  html {
+    /* the static mesh, identical stops to the WebGL layer: what you see for
+       the few frames before the canvas is up is already the right picture */
+    background:
+      radial-gradient(50% 50% at -20% -20%, #E5FAFBeb 0%, #E5FAFB81 55%, transparent 100%),
+      radial-gradient(50% 50% at 90% 10%,   #E6DFF1eb 0%, #E6DFF181 55%, transparent 100%),
+      radial-gradient(55% 55% at -10% 80%,  #FEF8DCeb 0%, #FEF8DC81 55%, transparent 100%),
+      radial-gradient(50% 50% at 85% 90%,   #FFDCE9eb 0%, #FFDCE981 55%, transparent 100%),
+      radial-gradient(60% 60% at 50% 50%,   #DECDECeb 0%, #DECDEC81 55%, transparent 100%),
+      #FDF7E7;
+    background-attachment: fixed;
+  }
+  html, body { overflow-x: clip; }
   body { font-family: 'Hanken Grotesk', system-ui, sans-serif; color: var(--ink); }
   .display { font-weight: 800; letter-spacing: -0.03em; }
-  .serif-accent { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+  .serif-accent { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em;
+    /* optical centring: italics lean right and end on a period, so the line
+       reads right-heavy when geometrically centred; nudge it back a hair */
+    display: inline-block; transform: translateX(-0.04em); }
 
-  /* The app's radial mesh, in CSS. */
+  /* The app's radial mesh (MeshBackground.STOPS), in CSS: fallback for the
+     WebGL canvas and the fill of the phone screens. */
   .mesh {
     background:
-      radial-gradient(55% 45% at 18% 8%, #E5FAFBcc 0%, transparent 60%),
-      radial-gradient(50% 40% at 85% 6%, #E6DFF1cc 0%, transparent 60%),
-      radial-gradient(55% 45% at 8% 92%, #FEF8DCdd 0%, transparent 60%),
-      radial-gradient(55% 45% at 92% 94%, #FFDCE9cc 0%, transparent 60%),
-      radial-gradient(60% 55% at 50% 45%, #DECDEC99 0%, transparent 65%),
+      radial-gradient(50% 50% at -20% -20%, #E5FAFBeb 0%, #E5FAFB81 55%, transparent 100%),
+      radial-gradient(50% 50% at 90% 10%,   #E6DFF1eb 0%, #E6DFF181 55%, transparent 100%),
+      radial-gradient(55% 55% at -10% 80%,  #FEF8DCeb 0%, #FEF8DC81 55%, transparent 100%),
+      radial-gradient(50% 50% at 85% 90%,   #FFDCE9eb 0%, #FFDCE981 55%, transparent 100%),
+      radial-gradient(60% 60% at 50% 50%,   #DECDECeb 0%, #DECDEC81 55%, transparent 100%),
       #FDF7E7;
   }
+  body.mesh { background-attachment: fixed; background-color: var(--bg); }
   .mesh-panel {
     background:
       radial-gradient(60% 70% at 15% 20%, #E5FAFBd9 0%, transparent 65%),
@@ -102,108 +141,149 @@
   .coach-card:hover .face-idle { display:none; }
   .coach-card:hover .face-party { display:inline; }
 
-  /* Hero UI pieces (Superhuman-style): glass fragments of the real app —
-     a chat, the diary, the weekly check-in, a pill, a coach bubble —
-     scattered over the hero. They pop in staggered, then hover forever,
-     each on its own rhythm so the motion never syncs up. */
-  .hero-piece { position:absolute;
-    animation:bubbleIn .6s cubic-bezier(.34,1.56,.64,1) both; }
-  .hero-piece .bubble-float { animation:bubbleDrift 5.5s ease-in-out infinite; }
-  .hero-piece:nth-child(even) .bubble-float { animation-name:bubbleDriftAlt; }
-  .hero-card { background:rgba(255,255,255,.55); backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.65);
-    border-radius:22px; padding:14px 16px; box-shadow:0 12px 30px rgba(0,0,0,.08); }
-  .hero-card h4 { display:flex; align-items:baseline; justify-content:space-between;
-    gap:12px; font-size:11px; font-weight:800; text-transform:uppercase;
-    letter-spacing:.08em; color:#84827E; margin:0 0 6px; }
-  .hero-card h4 .h4-val { font-size:12px; letter-spacing:0; text-transform:none;
-    font-weight:700; color:#52514C; white-space:nowrap; }
-  .hero-row { display:flex; justify-content:space-between; gap:16px;
-    font-size:13px; color:#52514C; padding:6px 0; border-top:1px solid rgba(0,0,0,.05); }
-  .hchat-msg { background:rgba(255,255,255,.8); border-radius:14px 14px 14px 4px;
-    padding:8px 12px; font-size:13px; line-height:1.4; color:#52514C; max-width:88%; width:fit-content; }
-  .hchat-user { background:#F9E27D; border-radius:14px 14px 4px 14px; margin-left:auto; }
-  .hero-input { display:flex; align-items:center; justify-content:space-between; gap:8px;
-    background:rgba(255,255,255,.8); border-radius:999px; padding:8px 14px;
-    font-size:12px; color:#84827E; margin-top:10px; }
-  .hero-pill { display:inline-flex; align-items:center; gap:8px;
-    background:rgba(255,255,255,.55); backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.65);
-    border-radius:999px; padding:9px 16px; font-size:13px; font-weight:700;
-    color:#52514C; box-shadow:0 12px 30px rgba(0,0,0,.08); white-space:nowrap; }
-  /* messenger-style coach quote: avatar outside, glass bubble with tail */
-  .hero-bubble { max-width:300px; }
-  .hero-bubble .bubble-float { display:flex; align-items:flex-end; gap:7px; }
+  /* "What you can do" runway: 4 chapters × 80vh of scroll + the stage. The
+     phone is sized from the viewport height so title + phone + cards always
+     fit one screen. Cards: title always visible, body unfolds when active. */
+  .how-runway { height: 420vh; }
+  /* Mobile/tablet (<lg): same scroll-driven story, one card at a time.
+     The stage stays pinned: phone on top (sized to leave room for a card),
+     the ACTIVE card below it, dots underneath. Non-active cards are hidden. */
+  @media (max-width: 1023px) {
+    .how-runway { height: 340vh; }
+    /* Fixed geometry so the phone never moves between chapters: the stage
+       starts below the nav, the phone takes the height that is left after a
+       fixed-height title card + dots, and the card box has a constant height. */
+    .how-stage { justify-content: flex-start; padding-top: 5.5rem; }
+    .how-stage > div { padding-top: 0 !important; }
+    .how-phone { width: calc((100vh - 5.5rem - 9.5rem) * 1170 / 2472); max-width: 320px; }
+    #include-cards { min-height: 4.5rem; display: flex; align-items: center; justify-content: center; }
+    /* .how-stage prefix: beats the base rules that follow later in this sheet.
+       On mobile the chapter is plain centred text under the phone: no card
+       chrome, no number, no body. */
+    .how-stage .include-card:not(.is-active) { display: none; }
+    .how-stage .include-card.is-active { width: 100%; transform: none; animation: cardIn .45s cubic-bezier(.22,1,.36,1) both;
+      background: transparent !important; border-color: transparent !important; box-shadow: none !important; padding: 0 1rem; }
+    .how-stage .include-card > .flex { justify-content: center; text-align: center; }
+    .how-stage .include-card > .flex > span { display: none; }          /* the "01" index */
+    .how-stage .include-card h3 { font-size: 1.375rem; line-height: 1.25; }
+    .how-stage .include-body { display: none; }
+  }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .include-dots { display: flex; justify-content: center; gap: 6px; margin-top: 14px; }
+  .include-dots span { width: 6px; height: 6px; border-radius: 999px; background: rgba(82,81,76,.18); transition: background .3s, width .3s; }
+  .include-dots span.is-on { background: #52514C; width: 18px; }
+  @media (min-width: 1024px) { .include-dots { display: none; } }
+  /* Same 330px phone as before; it only gives way (down to 290px) on short
+     windows, and the stage may then crop a little at the edges. */
+  @media (min-width: 1024px) { .how-phone { width: clamp(290px, calc((100vh - 7rem) * 1170 / 2472), 340px); } }
+  .include-shot { opacity: 0; transition: opacity .5s ease; }
+  .include-shot.is-on { opacity: 1; }
+  .include-card { cursor: pointer; transition: background-color .5s, box-shadow .5s, border-color .5s, transform .5s cubic-bezier(.22,1,.36,1); }
+  .include-card.is-active { transform: scale(1.02); }
+  .include-body { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .55s cubic-bezier(.22,1,.36,1), opacity .35s, margin-top .55s; }
+  .include-body > p { overflow: hidden; }
+  .include-card.is-active .include-body { grid-template-rows: 1fr; opacity: 1; margin-top: .6rem; }
+  @media (prefers-reduced-motion: reduce) {
+    .how-runway { height: auto; padding: 4rem 0; }
+    .how-stage { position: relative; height: auto; }
+    .include-body { grid-template-rows: 1fr; opacity: 1; margin-top: .6rem; }
+  }
 
+  #page-gl { opacity: 0; transition: opacity .35s ease; }
+
+  /* Recipes: the cards are fanned like a hand of cards, on every screen size.
+     Each card gets its own --tx/--ty/--rot.
+     Below lg only the first three cards show (the deck is 240px wide cards);
+     from lg all five fan out in one row, so the section stays one screen tall. */
+  .infl-deck { position: relative; margin: 0 auto; height: 420px; max-width: 420px; }
+  .infl-item { position: absolute; top: 12px; left: 50%; width: 240px; transform-origin: 50% 100%;
+    transform: translateX(-50%) translate(var(--tx, 0), var(--ty, 0)) rotate(var(--rot, 0deg));
+    transition: transform .5s cubic-bezier(.22,1,.36,1), z-index 0s .1s; z-index: var(--z, 1); }
+  .infl-item [data-reveal] { transition-delay: 0s !important; }
+  /* Motion: the deck starts as one pile and fans out when it scrolls into
+     view (centre card first, outer cards trailing). */
+  .infl-deck:not(.is-open) .infl-item { --tx: 0; --ty: 40px; --rot: 0deg; }
+  .infl-deck.is-open .infl-item { transition-duration: .9s; transition-delay: var(--d, 0s); }
+  .infl-0 { --d: .1s; }  .infl-1 { --d: 0s; }  .infl-2 { --d: .1s; }
+  .infl-0 { --tx: -34%; --rot: -9deg; --z: 1; }
+  .infl-1 { --ty: -6px; --z: 3; }
+  .infl-2 { --tx: 34%; --rot: 9deg; --z: 2; }
+  @media (max-width: 420px) { .infl-deck { height: 380px; } .infl-item { width: 210px; } }
+  @media (min-width: 1024px) {
+    .infl-deck { height: 500px; max-width: 1100px; }
+    .infl-item { width: 250px; top: 0; }
+    .infl-0 { --tx: calc(-1 * min(380px, 30vw)); --ty: 64px; --rot: -13deg; --z: 1; }
+    .infl-1 { --tx: calc(-1 * min(190px, 15vw)); --ty: 22px; --rot: -7deg;  --z: 2; }
+    .infl-2 { --tx: 0;                            --ty: 0;    --rot: 0deg;   --z: 3; }
+    .infl-3 { --tx: min(190px, 15vw);             --ty: 22px; --rot: 7deg;   --z: 2; }
+    .infl-4 { --tx: min(380px, 30vw);             --ty: 64px; --rot: 13deg;  --z: 1; }
+    .infl-0 { --d: .2s; } .infl-1 { --d: .1s; } .infl-2 { --d: 0s; }
+    .infl-3 { --d: .1s; } .infl-4 { --d: .2s; }
+  }
+
+
+  /* Coaches on phones: compact cards (the avatar SVG scales with its box). */
+  @media (max-width: 639px) {
+    .coach-card { padding: 1rem .75rem; }
+    .coach-card svg { width: 56px; height: 56px; }
+    .coach-card h3 { font-size: 1.125rem; }
+    .coach-card p:first-of-type { font-size: 10px; margin-bottom: .5rem; }
+    .coach-card p:last-of-type { font-size: 13px; line-height: 1.45; }
+  }
+
+  /* Hero scrollytelling. The runway height is the scroll budget: 100vh of
+     stage + 180vh of story (zoom, then the chat). */
+  .hero-runway { height: 280vh; }
+  #hero-phone-wrap { transform-origin: 50% 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-runway { height: auto; padding-bottom: 6rem; }
+    .hero-stage { position: relative; height: auto; }
+    .hero-chat { pointer-events: auto !important; overflow-y: auto !important; }
+  }
   /* Hero phone: the include-section iPhone frame, holding a live chat with
      Sam. The screen is a mini app: header, autoscrolling thread, input bar. */
-  .hero-phone { width:310px; border-radius:54px; background:#1c1c1e; padding:6px;
+  .hero-phone { width:300px; border-radius:54px; background:#1c1c1e; padding:6px;
     box-shadow:0 30px 70px rgba(0,0,0,.28); pointer-events:auto; }
-  .hero-phone-screen { border-radius:48px; overflow:hidden; aspect-ratio:9/18.4;
-    display:flex; flex-direction:column; }
-  .hero-phone-head { display:flex; align-items:center; gap:8px; padding:20px 18px 10px; }
-  .hero-phone-head .ph-title { font-weight:800; letter-spacing:-.02em; font-size:15px; line-height:1.1; }
-  .hero-phone-head .ph-sub { font-size:10.5px; color:#84827E; }
-  .hero-phone-input { display:flex; align-items:center; gap:8px; margin:10px 12px 16px;
-    background:rgba(255,255,255,.8); border-radius:999px; padding:9px 14px;
-    font-size:12px; color:#84827E; box-shadow:0 4px 12px rgba(0,0,0,.05); }
-  .hero-chat { flex:1; overflow-y:auto; pointer-events:auto; overscroll-behavior:contain;
-    padding:8px 12px; display:flex; flex-direction:column; gap:9px;
-    scrollbar-width:none;
+  .hero-phone-screen { position:relative; border-radius:48px; overflow:hidden; aspect-ratio:9/18.4; --z: 0.7385; }
+  /* after the base rule on purpose: same specificity, later wins */
+  @media (max-width: 640px) { .hero-phone { width:260px; border-radius:46px; } .hero-phone-screen { border-radius:41px; --z: 0.6359; } }
+  /* THE APP AT 1:1. Everything inside .app is laid out at the app's native
+     390pt width (× 797pt = the frame's 9:18.4 ratio) with the app's own
+     tokens (typography, radii, spacing from app/src/theme/tokens.ts and the
+     chat components), then transform-scaled to the frame: --z = frame width
+     / 390. Proportions therefore match the real app by construction. */
+  .app { position:absolute; top:0; left:0; width:390px; height:797px; transform:scale(var(--z)); transform-origin:0 0;
+    display:flex; flex-direction:column; font-size:16px; line-height:26px; color:#52514C; }
+  .app-head { display:flex; align-items:center; gap:12px; padding:30px 20px 16px; }          /* ScreenHeader under the safe area */
+  .app-head .ph-title { font-size:20px; font-weight:800; letter-spacing:.6px; line-height:24px; text-transform:uppercase; }  /* h1 */
+  .app-head .ph-sub { font-size:12px; letter-spacing:.24px; line-height:16px; color:#84827E; font-weight:500; } /* caption */
+  .app-head .ph-avatar { margin-left:auto; width:38px; height:38px; border-radius:999px; background:#52514C;
+    color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; }
+  .hero-chat { flex:1; overflow-y:hidden; pointer-events:none; overscroll-behavior:contain;
+    padding:8px 20px 24px; display:flex; flex-direction:column; gap:10px; scrollbar-width:none;
     -webkit-mask-image:linear-gradient(to bottom, transparent, #000 16px, #000 calc(100% - 16px), transparent);
     mask-image:linear-gradient(to bottom, transparent, #000 16px, #000 calc(100% - 16px), transparent); }
   .hero-chat::-webkit-scrollbar { display:none; }
-  .hero-chat .bubble-body p { font-size:13.5px; }
-  .hero-chat .bubble-user { font-size:13.5px; }
-  .hero-chat .bubble-name { font-size:12px; }
-  .hero-chat .bubble-avatar { width:30px; height:30px; }
-  /* sent photo: image bubble on the user side (snap it); the emoji shows
-     whenever the real shot is missing */
-  .chat-photo { position:relative; align-self:flex-end; flex:0 0 170px; width:150px; height:170px;
-    border-radius:18px 18px 5px 18px; overflow:hidden;
-    border:1px solid rgba(255,255,255,.6); box-shadow:0 12px 30px rgba(0,0,0,.12);
-    display:flex; align-items:center; justify-content:center; font-size:40px; }
-  .chat-photo img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-  /* full-width standalone card sheet inside the chat (recipe, meal) */
-  .hero-chat .chat-card { width:100%; max-width:100%; padding:13px;
-    border-radius:18px; }
-  .hero-chat .chat-card::after { display:none; }
-  /* consecutive coach bubbles: only the last shows the avatar, the rest
-     are indented by the avatar's width, like a real messenger */
-  .hchat-row { display:flex; align-items:flex-end; gap:6px; }
-  .hchat-row.no-avatar { padding-left:36px; }
-  .hchat-row.no-avatar .bubble-body { border-bottom-left-radius:18px; }
-  .hchat-row.no-avatar .bubble-body::after { display:none; }
-  .bubble-avatar { flex:0 0 auto; width:38px; height:38px; border-radius:50%;
-    background:rgba(255,255,255,.6); backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.65);
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    display:flex; align-items:center; justify-content:center; overflow:hidden; }
-  .bubble-body { position:relative; background:rgba(255,255,255,.55);
-    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-    border:1px solid rgba(255,255,255,.65);
-    border-radius:18px; border-bottom-left-radius:5px;
-    padding:8px 14px 10px; box-shadow:0 12px 30px rgba(0,0,0,.08); }
-  .bubble-body::after { content:""; position:absolute; left:-10px; bottom:-1px;
-    width:12px; height:12px; background:rgba(255,255,255,.55);
-    clip-path:path('M12 0 C12 7.5 7 12 0 12 L12 12 Z'); }
-  /* user message: yellow glass bubble, tail bottom-right */
-  .bubble-user { position:relative; align-self:flex-end;
-    background:rgba(249,226,125,.8); backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.55);
-    border-radius:18px; border-bottom-right-radius:5px; padding:8px 14px;
-    font-size:13px; line-height:1.45; color:#52514C; max-width:88%;
-    box-shadow:0 12px 30px rgba(0,0,0,.08); }
-  .bubble-user::after { content:""; position:absolute; right:-10px; bottom:-1px;
-    width:12px; height:12px; background:rgba(249,226,125,.8);
-    clip-path:path('M0 0 C0 7.5 5 12 12 12 L0 12 Z'); }
-  .hero-bubble p { font-size:14px; line-height:1.45; color:#52514C; margin:0; }
-  .hero-bubble .bubble-name { font-size:13px; font-weight:800; margin-bottom:1px; }
+  /* ChatBubble: AI on muted surface, leading, 6px notch top-left; user on
+     white 90%, trailing, notch top-right. bodyMd 16/24, padding 14, radii.lg 22. */
+  .bubble-body { align-self:flex-start; max-width:82%; background:rgba(248,248,250,.88);
+    border-radius:22px; border-top-left-radius:6px; padding:14px; }
+  .bubble-body p { margin:0; font-size:16px; line-height:24px; }
+  .bubble-user { align-self:flex-end; max-width:82%; background:rgba(255,255,255,.9);
+    border-radius:22px; border-top-right-radius:6px; padding:14px; font-size:16px; line-height:24px; }
+  /* cards (meal breakdown, plan): GlassCard — white 70%, radii.lg, padding 14 */
+  .hero-chat .chat-card { align-self:stretch; max-width:100%; background:rgba(255,255,255,.7);
+    border-radius:22px; padding:14px; }
+  /* ChatInput: white-glass pill, 16px text, 40pt round mic, 20px camera icon */
+  .app-input { display:flex; align-items:center; gap:12px; margin:10px 20px 26px; background:rgba(255,255,255,.8);
+    border-radius:999px; padding:6px 6px 6px 16px; font-size:16px; color:#84827E; box-shadow:0 4px 12px rgba(0,0,0,.05); }
+  .app-input .mic { width:40px; height:40px; border-radius:999px; background:rgba(255,255,255,.9);
+    display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  /* app buttons: 44pt pills, labelMd 14/700 */
+  .app-btn { flex:1; height:44px; display:flex; align-items:center; justify-content:center; border-radius:999px;
+    font-size:14px; font-weight:700; letter-spacing:.14px; background:rgba(255,255,255,.9); }
+  .app-btn.primary { background:#F9E27D; box-shadow:0 4px 12px rgba(249,226,125,.5); font-weight:800; }
   @keyframes bubbleIn { from { opacity:0; transform:translateY(18px) scale(.8) } to { opacity:1; transform:none } }
-  @keyframes bubbleDrift { 0%,100%{transform:translate(0,0) rotate(0)} 50%{transform:translate(4px,-9px) rotate(.6deg)} }
-  @keyframes bubbleDriftAlt { 0%,100%{transform:translate(0,0) rotate(0)} 50%{transform:translate(-5px,-7px) rotate(-.6deg)} }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-piece, .hero-piece .bubble-float { animation:none } }
 
   /* Real app screenshots in a consistent phone frame. When the PNG is
      missing, a faithful HTML recreation of the same screen shows instead
@@ -248,6 +328,9 @@
 </style>
 </head>
 <body class="antialiased selection:bg-[#F9E27D] selection:text-[#52514C]">
+<!-- page-wide moving gradient (WebGL, see pageGradient). Fixed behind all
+     content. When it cannot run, pageGradient adds .mesh to <body> instead. -->
+<canvas id="page-gl" class="fixed inset-0 w-full h-full pointer-events-none -z-10" aria-hidden="true"></canvas>
 
 <!-- ============ CAPSULE NAV (menu capsule + standalone lang & CTA) ============ -->
 <nav class="fixed left-1/2 -translate-x-1/2 top-4 sm:top-6 z-50 w-[calc(100%-2rem)] sm:w-auto">
@@ -274,48 +357,41 @@
 <!-- ================================================================ -->
 <main id="view-home">
 
-  <!-- HERO: full-screen manifesto over the mesh -->
-  <header class="relative min-h-screen overflow-hidden flex flex-col mesh">
-    <div class="absolute inset-0 bg-gradient-to-t from-[#FDF7E7] via-transparent to-transparent pointer-events-none"></div>
+  <!-- HERO: centred manifesto, phone below. Scrollytelling: the header is a
+       tall runway (--hero-runway) with a sticky, viewport-high stage inside.
+       Scrolling first zooms the phone in while the text fades up, then drives
+       the chat thread inside the phone (no autoscroll): the visitor reads the
+       conversation at their own pace, by scrolling the page. -->
+  <header id="hero" class="hero-runway relative">
+    <div class="hero-stage sticky top-0 h-screen flex flex-col items-center">
 
-    <div class="relative z-10 flex-1 flex items-end">
-      <div class="max-w-7xl mx-auto w-full px-6 sm:px-10 pb-[26vw] sm:pb-[19vw] lg:pb-[15vw] pt-40">
-        <div class="max-w-5xl" data-reveal>
-          <p class="text-xs uppercase tracking-[0.25em] text-[#84827E] font-semibold mb-8 flex items-center gap-3">
-            <span class="safran-mark" data-mark="18"></span><span data-i="hero_eyebrow"></span>
-          </p>
-          <!-- Sized for the Dutch compound "AI-gezondheidscoach": one size
-               step down from the template and a wider container, so the
-               headline breaks at sentence boundaries, not inside words. -->
-          <h1 class="display text-4xl sm:text-6xl lg:text-7xl leading-[1.0] text-[#52514C]" id="hero-title"></h1>
-          <div class="mt-10 flex items-center gap-6" data-reveal style="transition-delay:700ms">
-            <a href="/#download" data-nav="/#download" class="group inline-flex items-center gap-2.5 bg-[#F9E27D] hover:brightness-95 active:scale-95 text-[#52514C] font-bold text-base px-7 py-3.5 rounded-full transition-all duration-300 shadow-xl shadow-[#F9E27D]/50">
-              <span data-i="nav_cta"></span>
-              <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-            </a>
-            <a href="/#coaches" data-nav="/#coaches" class="text-sm text-[#84827E] hover:text-[#52514C] border-b border-black/15 hover:border-black/60 pb-0.5 transition-colors duration-300" data-i="hero_cta2"></a>
-          </div>
+
+      <div id="hero-copy" class="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-10 pt-28 sm:pt-36 text-center">
+        <p class="text-xs uppercase tracking-[0.25em] text-[#84827E] font-semibold mb-7 flex items-center justify-center gap-3">
+          <span class="safran-mark" data-mark="18"></span><span data-i="hero_eyebrow"></span>
+        </p>
+        <h1 class="display text-4xl sm:text-6xl lg:text-7xl leading-[1.0] text-[#52514C]" id="hero-title"></h1>
+        <p class="mt-6 text-lg sm:text-xl text-[#84827E] max-w-xl mx-auto leading-relaxed" data-i="hero_sub"></p>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+          <a href="/#download" data-nav="/#download" class="group inline-flex items-center gap-2.5 bg-[#F9E27D] hover:brightness-95 active:scale-95 text-[#52514C] font-bold text-base px-7 py-3.5 rounded-full transition-all duration-300 shadow-xl shadow-[#F9E27D]/50">
+            <span data-i="nav_cta"></span>
+            <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+          <a href="/#coaches" data-nav="/#coaches" class="text-sm text-[#84827E] hover:text-[#52514C] border-b border-black/15 hover:border-black/60 pb-0.5 transition-colors duration-300" data-i="hero_cta2"></a>
         </div>
       </div>
-    </div>
 
-    <!-- scrollable chat with Sam, floating over the hero. The inner div
-         mirrors the content container (max-w-7xl + px-10) so the chat sits
-         at the same inset from the right edge as the headline from the
-         left. Desktop only. -->
-    <div class="absolute inset-0 z-10 hidden lg:block pointer-events-none">
-      <div id="hero-bubbles" class="max-w-7xl mx-auto px-6 sm:px-10 h-full relative"></div>
-    </div>
+      <!-- the phone: rendered by renderHeroPhone(), positioned by heroScroll() -->
+      <div id="hero-phone-wrap" class="relative z-10 mt-10 sm:mt-12 will-change-transform">
+        <div id="hero-phone" class="hero-phone"></div>
+      </div>
 
-    <!-- giant cropped wordmark. Centered via inset-x-0 (NOT a translate
-         transform: the parallax script owns this element's transform). -->
-    <div class="absolute -bottom-[4vw] inset-x-0 z-[5] pointer-events-none overflow-hidden select-none" data-parallax="0.5">
-      <p class="display text-[19.5vw] leading-none text-center text-[#52514C]/[0.08] whitespace-nowrap">SAFRAN</p>
+      <p id="hero-hint" class="absolute bottom-6 inset-x-0 text-center text-[11px] uppercase tracking-[0.2em] text-[#84827E]/80 pointer-events-none" data-i="hero_scroll_hint"></p>
     </div>
   </header>
 
   <!-- EAT LIKE YOUR FAVOURITE INFLUENCERS: imported recipe grid -->
-  <section id="influencers" class="pt-16 sm:pt-24">
+  <section id="influencers" class="pt-16 sm:pt-24 overflow-x-clip">
     <div class="max-w-7xl mx-auto px-6 sm:px-10">
       <div class="max-w-3xl mx-auto text-center mb-12" data-reveal>
         <h2 class="display text-4xl sm:text-6xl leading-[1.02]" id="infl-title"></h2>
@@ -324,35 +400,38 @@
       <!-- Three explicit column stacks (no CSS-columns auto-balancing, which
            kept eating the stagger): outer columns start one step below the
            middle one, cards flow with one constant feed gap. -->
-      <div id="infl-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      <!-- Three explicit column stacks (no CSS-columns auto-balancing):
+           outer columns start one step below the middle one on large screens. -->
+      <div id="infl-grid" class="infl-deck"></div>
     </div>
   </section>
 
-  <!-- WHAT DOES SAFRAN INCLUDE: Cal-AI-style interactive showcase.
-       Left: phone (placeholder until real shots land in assets/include-N.png).
-       Right: clickable feature cards; the active one swaps the phone screen. -->
-  <section id="how" class="relative pt-16 sm:pt-24 pb-8">
-    <div class="max-w-7xl mx-auto px-6 sm:px-10">
-      <h2 class="display text-4xl sm:text-6xl leading-[1.02] text-center mb-12" id="how-title"></h2>
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-        <!-- phone -->
-        <div class="lg:col-span-5 flex flex-col items-center" data-reveal>
-          <div class="w-[300px] sm:w-[330px] rounded-[54px] bg-[#1c1c1e] p-[6px] shadow-2xl shadow-black/25">
-            <div id="include-screen" class="relative rounded-[48px] overflow-hidden aspect-[9/19.2] mesh">
-              <img id="include-img" class="hidden absolute inset-0 w-full h-full object-cover" alt="Safran app screen" />
-              <!-- placeholder screen until real shots are provided -->
-              <div id="include-placeholder" class="absolute inset-0 flex flex-col items-center justify-center gap-4 px-8 text-center">
-                <span class="safran-mark" data-mark="52"></span>
-                <span id="include-ph-emoji" class="text-6xl"></span>
-                <p id="include-ph-title" class="display text-xl text-[#52514C]"></p>
+  <!-- WHAT YOU CAN DO: scroll-driven showcase. The section is a runway with
+       a sticky, viewport-high stage: phone left, all four chapter cards
+       right, always visible. Scrolling advances the active chapter; the
+       active card expands (body text unfolds), the phone shows that
+       chapter's screen and, for the chat chapters, the thread follows the
+       scroll. Clicking a card jumps the scroll to that chapter. -->
+  <section id="how" class="relative pt-16 sm:pt-24">
+    <!-- title scrolls away normally; only phone + cards get pinned -->
+    <h2 class="display text-4xl sm:text-6xl leading-[1.02] text-center px-6 mb-4 sm:mb-8" id="how-title" data-reveal></h2>
+    <div class="how-runway relative">
+    <div class="how-stage sticky top-0 h-screen flex flex-col justify-center">
+      <div class="max-w-7xl mx-auto w-full px-6 sm:px-10 pt-16 lg:pt-20">
+        <div class="grid lg:grid-cols-[auto_1fr] gap-5 lg:gap-14 items-center lg:max-w-5xl lg:mx-auto">
+          <div class="how-sticky-phone flex justify-center">
+            <!-- same frame as the hero phone: black body, 6px bezel, rounded screen -->
+            <div class="how-phone rounded-[46px] lg:rounded-[54px] bg-[#1c1c1e] p-[6px] shadow-2xl shadow-black/25">
+              <div class="relative rounded-[41px] lg:rounded-[48px] overflow-hidden aspect-[1170/2472] mesh">
+                <img class="include-shot absolute inset-x-0 bottom-0 w-full object-cover object-bottom" alt="" decoding="async" />
+                <img class="include-shot absolute inset-x-0 bottom-0 w-full object-cover object-bottom" alt="" decoding="async" />
               </div>
             </div>
           </div>
-          <div id="include-dots" class="flex gap-2 mt-6"></div>
+          <div><div id="include-cards" class="space-y-3"></div><div id="include-dots" class="include-dots"></div></div>
         </div>
-        <!-- feature cards -->
-        <div id="include-cards" class="lg:col-span-7 space-y-4" data-reveal></div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -363,7 +442,7 @@
         <h2 class="display text-4xl sm:text-6xl leading-[1.02]" id="why-title"></h2>
         <p class="text-lg text-[#84827E] mt-5" data-i="why_sub"></p>
       </div>
-      <div class="grid md:grid-cols-3 gap-10 md:gap-12">
+      <div class="grid md:grid-cols-3 gap-10 md:gap-12 text-center">
         <div data-reveal>
           <h3 class="display text-2xl mb-3" data-i="why1_t"></h3>
           <p class="text-[#84827E] leading-relaxed" data-i="why1_b"></p>
@@ -378,7 +457,7 @@
         </div>
       </div>
       <div class="mt-12 flex justify-center" data-reveal>
-        <a href="#" class="inline-flex items-center gap-3 bg-black hover:bg-[#1a1a1a] active:scale-95 text-white px-7 py-3 rounded-2xl transition-all duration-300 shadow-xl shadow-black/20">
+        <a href="https://apps.apple.com/app/id6794821755" data-store class="inline-flex items-center gap-3 bg-black hover:bg-[#1a1a1a] active:scale-95 text-white px-7 py-3 rounded-2xl transition-all duration-300 shadow-xl shadow-black/20">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8.94-.19 1.84-.86 3.06-.8 1.53.12 2.68.72 3.44 1.83-3.17 1.9-2.66 6.07.42 7.32-.64 1.29-1.31 2.55-2 3.82ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>
           <span class="text-left leading-tight">
             <span class="block text-[10px] uppercase tracking-wide opacity-80" data-i="badge_top"></span>
@@ -396,15 +475,16 @@
         <h2 class="display text-4xl sm:text-6xl leading-[1.02]" id="coach-title"></h2>
         <p class="text-lg text-[#84827E] mt-6 max-w-xl mx-auto" data-i="coach_sub"></p>
       </div>
-      <div id="coach-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+      <div id="coach-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto"></div>
     </div>
   </section>
 
-  <!-- TESTIMONIALS (sample content: replace with real beta quotes before launch) -->
-  <section id="testimonials" class="py-16 sm:py-24">
-    <div class="max-w-7xl mx-auto px-6 sm:px-10">
-      <h2 class="display text-4xl sm:text-6xl leading-[1.02] text-center mb-12" id="testi-title"></h2>
-      <div id="testi-grid"></div>
+  <!-- FAQ: the questions the App Store page can't answer in full. Also
+       emitted as FAQPage JSON-LD (see renderFaq) for rich results. -->
+  <section id="faq" class="py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-6 sm:px-10">
+      <h2 class="display text-4xl sm:text-6xl leading-[1.02] text-center mb-12" id="faq-title"></h2>
+      <div id="faq-list" class="space-y-3"></div>
     </div>
   </section>
 
@@ -419,7 +499,7 @@
       <h2 class="display text-4xl sm:text-6xl leading-[1.02]" id="cta-title"></h2>
       <p class="text-lg text-[#84827E] mt-6 max-w-lg mx-auto" data-i="cta_sub"></p>
       <!-- THE store badge: identical markup to the why-section one. -->
-      <a href="#" class="mt-10 inline-flex items-center gap-3 bg-black hover:bg-[#1a1a1a] active:scale-95 text-white px-7 py-3 rounded-2xl transition-all duration-300 shadow-xl shadow-black/20">
+      <a href="https://apps.apple.com/app/id6794821755" data-store class="mt-10 inline-flex items-center gap-3 bg-black hover:bg-[#1a1a1a] active:scale-95 text-white px-7 py-3 rounded-2xl transition-all duration-300 shadow-xl shadow-black/20">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8.94-.19 1.84-.86 3.06-.8 1.53.12 2.68.72 3.44 1.83-3.17 1.9-2.66 6.07.42 7.32-.64 1.29-1.31 2.55-2 3.82ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>
         <span class="text-left leading-tight">
           <span class="block text-[10px] uppercase tracking-wide opacity-80" data-i="badge_top"></span>
@@ -477,7 +557,7 @@
     <div class="flex flex-wrap gap-x-7 gap-y-2 text-sm text-[#84827E]">
       <a href="/privacy" data-nav="/privacy" class="hover:text-[#52514C] transition-colors duration-300" data-i="nav_privacy"></a>
       <a href="/terms" data-nav="/terms" class="hover:text-[#52514C] transition-colors duration-300" data-i="nav_terms"></a>
-      <a href="mailto:support@safran.app" class="hover:text-[#52514C] transition-colors duration-300">support@safran.app</a>
+      <a data-support href="mailto:support@safranapp.com" class="hover:text-[#52514C] transition-colors duration-300">support@safranapp.com</a>
     </div>
     <p class="text-xs text-[#84827E]/70">© 2026 Safran</p>
   </div>
@@ -502,56 +582,58 @@ const T = {
   en: {
     nav_how: 'How it works', nav_why: 'Why Safran', nav_recipes: 'Recipes', nav_coaches: 'Coaches', nav_privacy: 'Privacy', nav_terms: 'Terms', nav_cta: 'Get the app',
     hero_eyebrow: 'Meet Safran',
-    hero_title: 'Your AI health coach. |Built around your goals.|',
+    hero_title: 'The health coach |that’s always there for you.|',
+    hero_sub: 'Send a photo of your plate, scan a barcode or type what you ate. Safran counts the calories, gives honest feedback and adjusts your plan every week, so you actually reach your goal.',
     hero_cta2: 'Meet your coaches',
+    hero_scroll_hint: 'Scroll to read the chat',
     infl_title: 'Eat like your favourite |fitness and health influencers.|',
     infl_sub: 'See a recipe on Instagram or TikTok? Paste the link and it lands in Safran with ingredients, macros and method, ready to save or log.',
-    infl_save: 'Save recipe', infl_log: 'Log recipe', infl_per: '/ serving',
+    infl_per: '/ serving',
     infl_recipes: [
-      { title: 'Turkish eggs with yogurt (çılbır)', src: 'Instagram · @albi.nutrition', kcal: 419, emoji: '🍳', g: ['#F0A9A0', '#FEF8DC'], tall: true },
-      { title: 'Gut-friendly sweet potato brownies', src: 'Instagram · @albi.nutrition', kcal: 161, emoji: '🍫', g: ['#8A5A86', '#FFDCE9'] },
-      { title: 'Chicken corn salad', src: 'TikTok · @proteindueldaily', kcal: 356, emoji: '🥗', g: ['#D6A12E', '#E5FAFB'], tall: true },
-      { title: 'Harissa chickpea traybake', src: 'Instagram', kcal: 521, emoji: '🥘', g: ['#BD5536', '#FEF8DC'], tall: true },
-      { title: 'Moroccan lentil soup', src: 'Instagram', kcal: 332, emoji: '🍲', g: ['#2E7D4F', '#E5FAFB'] },
-      { title: 'Shakshuka with feta', src: 'TikTok', kcal: 516, emoji: '🍅', g: ['#BD5536', '#FFDCE9'], tall: true },
+      { title: 'Grilled chicken power bowl', src: 'Instagram', kcal: 640, img: 'bowl', tall: true },
+      { title: 'Banana overnight oats with granola and peanut butter', src: 'TikTok', kcal: 520, img: 'oats' },
+      { title: 'Oven-baked salmon with green beans and potatoes', src: 'Instagram', kcal: 560, img: 'salmon', tall: true },
+      { title: 'Chicken and corn lettuce wraps', src: 'TikTok', kcal: 340, img: 'wraps' },
+      { title: 'Sesame carrot and cucumber salad', src: 'TikTok', kcal: 140, img: 'carrot', tall: true },
     ],
     why_title: 'Why choose |Safran?|',
-    why_sub: 'A real coach in your pocket, without the coaching invoice.',
-    why1_t: 'Personal, actually',
-    why1_b: 'Your coach knows your goal, your diary, your steps and your week. Every answer starts from your numbers, not from a generic meal plan PDF.',
+    why_sub: 'A coach in your pocket, without the coaching invoice.',
+    why1_t: 'A coach with an opinion',
+    why1_b: 'Your coach knows your goal, your diary, your steps and your week. Every answer starts from your numbers: no applause for a pizza, but a plan for dinner.',
     why2_t: 'Coaching without the price tag',
     why2_b: 'A human coach runs you 100+ euros a month. Safran gives you the plan, the check-ins and the honest pushes for a fraction of that, around the clock.',
     why3_t: 'Food you actually want to eat',
-    why3_b: 'No banned foods, no chicken-and-broccoli sentence. Your plan is built from recipes you save and love, and it adjusts when your week does.',
+    why3_b: 'No banned foods, no chicken-and-broccoli sentence. Your plan is built from recipes you save and love, respects your allergies, and adjusts when your week does.',
     badge_top: 'Download on the',
-    how_title: 'What does Safran |include?|',
+    how_title: 'What you can do |with Safran.|',
     include_items: [
-      ['Chat it, snap it, say it', 'Type "had a chicken wrap", photograph your plate or a nutrition label, or just talk. Safran breaks it into real ingredients and honest numbers, one tap to log.'],
-      ['Recipes from your feed', 'Paste an Instagram or TikTok recipe and it lands in your library with ingredients, macros and method. Cook it, log it, share it with one link.'],
-      ['A plan that recalibrates', 'Every week Safran closes the books: calories, training, steps. If real life diverged from the plan, it shows the impact on your goal date and offers the fix. Your call, one tap.'],
-      ['Meal programs built around you', 'A 14-day program from recipes you actually like, fitted to your calories, allergies excluded, swaps included.'],
+      ['Log like you text', 'Type "had a chicken wrap", send a photo of your plate, scan a barcode or just say it. Safran recognises what you ate, works out the calories and macros and logs it with one tap. Barcodes? Then the values come straight from the label.'],
+      ['Your plan gets smarter every week', 'Every week Safran looks back: average intake, days on target, steps and your weight trend. Did the week go differently than planned? You see right away what that does to your goal date, and your calories are adjusted.'],
+      ['Save your favourite recipes', 'Spotted a recipe on TikTok, Instagram or YouTube? Paste the link in the chat and Safran pulls out the ingredients, method and nutrition. Save it to your library and log it in one tap when you cook it.'],
+      ['A week menu and the grocery list', 'Ask for a day menu or a week plan and Safran puts it together from your own recipes and the library, tuned to your plan and goal. Fancy something else? Swap a dish with one tap. The grocery list is ready right away, sorted by aisle.'],
     ],
     coach_title: 'Same brain. |Four souls.|',
     coach_sub: 'Every coach knows your plan, your diary and your goal. How they talk to you about it is your choice.',
-    testi_title: 'What early users |are saying.|',
-    testi_items: [
-      { name: 'Emma', c: '#FFDCE9', text: 'I just text what I ate like I would to a friend. First tracker I have kept up for more than a week.' },
-      { name: 'Daan', c: '#E5FAFB', text: 'Pasted a TikTok recipe and it showed up with macros and everything. Cooked it the same night.' },
-      { name: 'Sofia', c: '#FEF8DC', text: 'My weekly check-in showed I walked more than planned, so I got to eat more calories! I love food and I want to hit my goal, and Safran gets both.' },
-      { name: 'Lucas', c: '#E6DFF1', text: 'Rex jokes about my third croissant, but never about me. Weirdly, that is exactly what keeps me logging.' },
-      { name: 'Tom', c: '#E5FAFB', text: 'Set up my whole plan as a guest in two minutes before it ever asked me to make an account.' },
+    faq_title: 'Good |questions.|',
+    faq_items: [
+      ['How accurate are the numbers?', 'Barcode scans and label photos use the real label values. Typed and photographed meals are estimates from a nutrition database plus AI portion sizing, usually within about 10 to 15 percent, and you can correct any row before you log.'],
+      ['Do I need an account?', 'No. You start as a guest, set your plan and log your first meals without signing up. An account keeps your data across devices and unlocks the free trial of Premium.'],
+      ['What does it cost?', 'Trying Safran is free. Premium (unlimited coaching, photo logging, weekly check-ins, meal programs) comes with a 3-day free trial, then a monthly or yearly subscription billed through the App Store. Cancel anytime in your Apple settings.'],
+      ['What happens with my data?', 'Your diary, photos and chats live in Safran\'s own database on EU servers and are never sold or used for advertising. Text and photos you log are sent to an AI provider to estimate nutrition; that data is not used to train models. You can delete your account, and everything with it, from inside the app.'],
+      ['Is Safran medical advice?', 'No. Safran is a nutrition and lifestyle coach, not a doctor or dietitian. Talk to a professional before big changes, especially if you are pregnant, have a medical condition or a history of disordered eating.'],
+      ['Is there an Android version?', 'Safran launches on iPhone first. Android is planned; leave your email via support and we will let you know.'],
     ],
     hero_ui: {
       msgs: [
-        ['sam', 'Hi, I am Sam. What are we working toward?'],
+        ['sam', 'Hi, I am Safran, your AI health coach. What do you want to achieve?'],
         ['user', 'I want to go from 73 to 66 kg'],
         ['sam', 'Got it. How does your week look: workouts, steps?'],
         ['user', '2 workouts, around 8,000 steps a day'],
         ['plan'],
         ['sam', 'That’s 66 kg in about 15 weeks, around October 27. 1,550 kcal a day, eating food you actually love. No hype, no banned foods, real results. And you’re not doing this alone: I’m here every single day. First step. What did you eat today?'],
         ['user', 'I had eggs for breakfast'],
-        ['meal'],
         ['sam', 'Solid protein start. Zero fiber though, so work some veg or oats in later today.'],
+        ['meal'],
       ],
       breakfast: {
         title: 'Breakfast',
@@ -572,57 +654,6 @@ const T = {
       sub: 'AI health coach',
       inputPh: 'Message Safran...',
     },
-    include_recipe: {
-      msgs: [
-        ['user', 'https://vm.tiktok.com/ZGd9nDqEC/'],
-        ['sam', 'Found it. Reading the recipe from the post now.'],
-        ['recipe'],
-        ['sam', 'How many servings should I log?'],
-        ['user', '2 servings'],
-        ['sam', 'Logged: 320 kcal and 12 g protein. That leaves 1,180 of your 1,840 kcal for today.'],
-      ],
-      card: {
-        title: 'Sweet potato brownies 🍫',
-        src: 'From TikTok · mandipandeee',
-        kcal: '160 kcal',
-        servings: '/ serving · 8 servings',
-        rows: [
-          ['Mashed sweet potato', '1 cup'],
-          ['Almond butter', '0.5 cups'],
-          ['Cocoa powder', '0.25 cups'],
-          ['Eggs', '2 pieces'],
-          ['Vanilla extract', '1 pinch'],
-          ['Sea salt', '1 pinch'],
-          ['Sugar free chocolate chips', '0.25 cups'],
-        ],
-        edit: 'Edit recipe',
-        save: 'Save recipe',
-      },
-    },
-    include_chat: [
-      ['user', 'what should I have for lunch?'],
-      ['sam', 'You have 1,300 kcal and 60 g protein left today. Something with bread and cheese?'],
-      ['photo'],
-      ['sam', 'Sourdough toast with cottage cheese and tomato, right? Here is the breakdown:'],
-      ['meal'],
-      ['user', 'log it'],
-      ['sam', 'Done, 456 kcal. That is 21 g protein in, 39 to go. 844 kcal left for dinner.'],
-    ],
-    include_meal: {
-      title: 'Lunch',
-      total: '456 kcal',
-      totalLabel: 'Total',
-      macros: ['21g', '40g', '25g'],
-      rows: [
-        ['Sourdough bread', '2 slices', '160 kcal', ['6g', '30g', '2g']],
-        ['Cottage cheese', '100 g', '103 kcal', ['12g', '3g', '5g']],
-        ['Tomato', '1 piece', '22 kcal', ['1g', '5g', '0g']],
-        ['Olive oil', '1 tbsp', '119 kcal', ['0g', '0g', '14g']],
-        ['Sesame seeds', '1 tsp', '52 kcal', ['2g', '2g', '4g']],
-      ],
-      edit: 'Edit meal',
-      log: 'Log meal',
-    },
     cta_wordmark: 'LET’S GO', cta_title: 'Your coach is ready. |Are you?|',
     cta_sub: 'Start without an account. In two minutes your plan is set and your first meal is logged.',
     cta_note: 'Free to try. On iPhone now, Android soon.',
@@ -632,67 +663,69 @@ const T = {
     share_hint: 'Don’t have Safran yet? Install it from the App Store, then tap this link again. The recipe will be waiting, ready to save.',
     servings: (n) => `${n} serving${n === 1 ? '' : 's'}`,
     coaches: [
-      { id: 'sage', name: 'Kim', style: 'Gentle · warm, encouraging', quote: 'Calm is not weak. Small things, every day, beat every hype out there.' },
-      { id: 'sam', name: 'Sam', style: 'Balanced · supportive, honest nudges', quote: 'I’m in your corner and I won’t lie to you. That’s the whole deal.' },
-      { id: 'max', name: 'Max', style: 'Direct · straight talk', quote: 'Every day is game day. Pick a target, take it, repeat.' },
-      { id: 'rex', name: 'Rex', style: 'Tough love · blunt, never shaming', quote: 'No hype, no shortcuts. You show up, results show up.' },
+      { id: 'sage', name: 'Kim', style: 'Warm · calm and encouraging', quote: 'Calm is not weak. Small things, repeated, beat every shortcut ever invented.' },
+      { id: 'sam', name: 'Sam', style: 'Matter-of-fact · supportive, honest', quote: 'I’m in your corner and I won’t lie to you. That’s the whole deal.' },
+      { id: 'max', name: 'Max', style: 'Driven · a target for every day', quote: 'Pick one target for today, hit it, and tomorrow we do it again.' },
+      { id: 'rex', name: 'Rex', style: 'Tough love · blunt, never shaming', quote: 'There is no secret. Eat the plan, log the food, repeat.' },
     ],
-    privacy: {"title": "Privacy & data", "intro": "Safran works with sensitive stuff: what you eat, your weight, your goals. Here is exactly how that data is handled, in plain words.", "sections": [["What Safran stores", "Your profile and plan (goals, height, weight, diet style), your meal diary, saved recipes, your chat with the coach, and photos you add. Everything lives in Safran's own secured database, tied to your account, and is never sold or shared with advertisers."], ["How AI is used", "When you log food, snap a photo or import a recipe, that text or image is sent to an AI service to estimate ingredients and nutrition, and your coach replies come from the same service. Data sent this way is not used to train AI models. Your name and account details are never included."], ["Apple Health (steps)", "If you switch on Health sync, Safran reads one thing from Apple Health: your daily step count, to keep your movement, stats and weekly check-in accurate. Health data is never used for advertising or marketing, never sold, and never shared with third parties. You can stop syncing anytime on the steps card, and deleting your account erases your stored step history."], ["Services Safran runs on", "Your data is hosted in a secured database on servers in the EU. Nutrition estimation and coach replies come from a trusted AI provider; data sent there is not used to train AI models. Subscriptions are billed through your App Store account; Safran never sees your payment details. Each service processes only what it needs to do its job."], ["How long data is kept", "As long as your account exists. Delete your account and your profile, diary, recipes, chat history, photos and step history are permanently erased right away; residual copies in backups expire shortly after."], ["What you control", "You can edit or delete any meal or recipe, switch languages, and delete your entire account under Privacy & support. That permanently erases your profile, diary, recipes, chat history and photos. For a copy of your data, contact support."], ["Your rights", "You can access, correct, export and delete your data at any time. EU privacy law (GDPR) applies. For a data export or any privacy question, contact support@safran.app."]], "updated": "Last updated: July 15, 2026"},
-    terms: {"title": "Terms of Service", "intro": "The short version: Safran helps you eat and move toward your goal, and you stay the boss of your own health. The full agreement, in plain words:", "sections": [["The agreement", "By creating an account or using Safran you agree to these terms and to our Privacy Policy. If you do not agree, do not use the app. You must be at least 16 years old to use Safran."], ["What Safran is (and is not)", "Safran is an AI nutrition and lifestyle coach. Calorie and nutrient values are careful estimates, not lab results, and coach replies are generated by AI: check anything that looks off. Safran is not medical advice, diagnosis or treatment. Always consult a doctor or dietitian before making big changes, especially if you are pregnant, have a medical condition, or have a history of disordered eating."], ["Your account", "You can start as a guest; an account keeps your data across devices. Give accurate information, keep your login private, and use one account per person. You are responsible for activity under your account."], ["Trial and subscription", "Safran offers a free trial, then a paid subscription billed through your App Store account. Subscriptions renew automatically until you cancel in your App Store settings, at least 24 hours before the renewal date. Prices are always shown in the app before you pay."], ["Fair use", "Do not abuse the service: no automated scraping, reverse engineering, reselling, attempts to bypass usage limits, or unlawful content. Library recipes and coach output are for your personal use."], ["Your data and our work", "Your diary, photos and recipes remain yours; you give Safran permission to process them to run the service, as described in the Privacy Policy. The app, its design, its coaches and its content belong to Safran and may not be copied or used commercially."], ["No guarantees", "Safran is provided as is. Results depend on you; we do not guarantee weight change or health outcomes. To the maximum extent permitted by law, Safran's liability is limited to what you paid for the service in the past 12 months."], ["Ending and changes", "You can stop anytime by deleting your account. We may suspend accounts that break these terms. We may update these terms; meaningful changes are announced in the app. Dutch law applies. Questions: support@safran.app."]], "updated": "Last updated: July 15, 2026"},
+    privacy: {"title": "Privacy & data", "intro": "Safran works with sensitive stuff: what you eat, your weight, your goals. Here is exactly how that data is handled, in plain words.", "sections": [["What Safran stores", "Your profile and plan (goals, height, weight, diet style), your meal diary, saved recipes, your chat with the coach, and photos you add. Everything lives in Safran's own secured database, tied to your account, and is never sold or shared with advertisers."], ["How AI is used", "When you log food, snap a photo or import a recipe, that text or image is sent to an AI service to estimate ingredients and nutrition, and your coach replies come from the same service. Data sent this way is not used to train AI models. Your name and account details are never included."], ["Apple Health (steps)", "If you switch on Health sync, Safran reads one thing from Apple Health: your daily step count, to keep your movement, stats and weekly check-in accurate. Health data is never used for advertising or marketing, never sold, and never shared with third parties. You can stop syncing anytime on the steps card, and deleting your account erases your stored step history."], ["Services Safran runs on", "Your data is hosted in a secured database on servers in the EU. Nutrition estimation and coach replies come from a trusted AI provider; data sent there is not used to train AI models. Subscriptions are billed through your App Store account; Safran never sees your payment details. Each service processes only what it needs to do its job."], ["How long data is kept", "As long as your account exists. Delete your account and your profile, diary, recipes, chat history, photos and step history are permanently erased right away; residual copies in backups expire shortly after. Two things remain: anonymous usage statistics that cannot be linked to you (for example how long the account existed, roughly how many meals were logged and the reason you gave for leaving), and a hashed marker of your email address so a free trial cannot be claimed twice."], ["What you control", "You can edit or delete any meal or recipe, switch languages, and delete your entire account under Privacy & support. That permanently erases your profile, diary, recipes, chat history and photos. For a copy of your data, contact support."], ["Your rights", "You can access, correct, export and delete your data at any time. EU privacy law (GDPR) applies. For a data export or any privacy question, contact support@safranapp.com."]], "updated": "Last updated: September 12, 2026"},
+    terms: {"title": "Terms of Service", "intro": "The short version: Safran helps you eat and move toward your goal, and you stay the boss of your own health. The full agreement, in plain words:", "sections": [["The agreement", "By creating an account or using Safran you agree to these terms and to our Privacy Policy. If you do not agree, do not use the app. You must be at least 16 years old to use Safran."], ["What Safran is (and is not)", "Safran is an AI nutrition and lifestyle coach. Calorie and nutrient values are careful estimates, not lab results, and coach replies are generated by AI: check anything that looks off. Safran is not medical advice, diagnosis or treatment. Always consult a doctor or dietitian before making big changes, especially if you are pregnant, have a medical condition, or have a history of disordered eating."], ["Your account", "You can start as a guest; an account keeps your data across devices. Give accurate information, keep your login private, and use one account per person. You are responsible for activity under your account."], ["Trial and subscription", "Safran offers a free trial, then a paid subscription billed through your App Store account. Subscriptions renew automatically until you cancel in your App Store settings, at least 24 hours before the renewal date. Prices are always shown in the app before you pay."], ["Fair use", "Do not abuse the service: no automated scraping, reverse engineering, reselling, attempts to bypass usage limits, or unlawful content. Library recipes and coach output are for your personal use."], ["Your data and our work", "Your diary, photos and recipes remain yours; you give Safran permission to process them to run the service, as described in the Privacy Policy. The app, its design, its coaches and its content belong to Safran and may not be copied or used commercially."], ["No guarantees", "Safran is provided as is. Results depend on you; we do not guarantee weight change or health outcomes. To the maximum extent permitted by law, Safran's liability is limited to what you paid for the service in the past 12 months."], ["Ending and changes", "You can stop anytime by deleting your account. We may suspend accounts that break these terms. We may update these terms; meaningful changes are announced in the app. Dutch law applies. Questions: support@safranapp.com."]], "updated": "Last updated: September 12, 2026"},
   },
   nl: {
     nav_how: 'Zo werkt het', nav_why: 'Waarom Safran', nav_recipes: 'Recepten', nav_coaches: 'Coaches', nav_privacy: 'Privacy', nav_terms: 'Voorwaarden', nav_cta: 'Download de app',
     hero_eyebrow: 'Maak kennis met Safran',
-    hero_title: 'Jouw AI-gezondheids-<br/>coach. |Afgestemd op jouw doelen.|',
+    hero_title: 'De health coach |die altijd voor je klaarstaat.|',
+    hero_sub: 'Stuur een foto van je bord, scan een barcode of typ wat je at. Safran telt de calorieën, geeft eerlijke feedback en past je plan elke week aan, zodat je je doel écht haalt.',
     hero_cta2: 'Maak kennis met je coaches',
+    hero_scroll_hint: 'Scrol om de chat te lezen',
     infl_title: 'Eet als je favoriete |fitness- en healthinfluencers.|',
     infl_sub: 'Recept voorbij zien komen op Instagram of TikTok? Plak de link en Safran zet hem voor je klaar: ingrediënten, macro’s en bereiding. Opslaan of meteen loggen.',
-    infl_save: 'Recept opslaan', infl_log: 'Recept loggen', infl_per: '/ portie',
+    infl_per: '/ portie',
     infl_recipes: [
-      { title: 'Turkse eieren met yoghurt (çılbır)', src: 'Instagram · @albi.nutrition', kcal: 419, emoji: '🍳', g: ['#F0A9A0', '#FEF8DC'], tall: true },
-      { title: 'Darmvriendelijke zoete-aardappelbrownies', src: 'Instagram · @albi.nutrition', kcal: 161, emoji: '🍫', g: ['#8A5A86', '#FFDCE9'] },
-      { title: 'Kip-maïssalade', src: 'TikTok · @proteindueldaily', kcal: 356, emoji: '🥗', g: ['#D6A12E', '#E5FAFB'], tall: true },
-      { title: 'Harissa-kikkererwten traybake', src: 'Instagram', kcal: 521, emoji: '🥘', g: ['#BD5536', '#FEF8DC'], tall: true },
-      { title: 'Marokkaanse linzensoep', src: 'Instagram', kcal: 332, emoji: '🍲', g: ['#2E7D4F', '#E5FAFB'] },
-      { title: 'Shakshuka met feta', src: 'TikTok', kcal: 516, emoji: '🍅', g: ['#BD5536', '#FFDCE9'], tall: true },
+      { title: 'Power bowl met gegrilde kip', src: 'Instagram', kcal: 640, img: 'bowl', tall: true },
+      { title: 'Overnight oats met banaan, granola en pindakaas', src: 'TikTok', kcal: 520, img: 'oats' },
+      { title: 'Zalm uit de oven met sperziebonen en krieltjes', src: 'Instagram', kcal: 560, img: 'salmon', tall: true },
+      { title: 'Slawraps met kip en maïs', src: 'TikTok', kcal: 340, img: 'wraps' },
+      { title: 'Wortel-komkommersalade met sesam', src: 'TikTok', kcal: 140, img: 'carrot', tall: true },
     ],
     why_title: 'Waarom |Safran?|',
     why_sub: 'Alle voordelen van een coach, zonder de rekening.',
-    why1_t: 'Écht persoonlijk',
-    why1_b: 'Je coach kent je doel, je dagboek, je stappen en je week. Elk antwoord begint bij jouw cijfers, niet bij een standaard voedingsschema.',
+    why1_t: 'Een coach met een mening',
+    why1_b: 'Je coach kent je doel, je dagboek, je stappen en je week. Elk antwoord begint bij jouw cijfers: geen applaus voor een pizza, wel een plan voor het avondeten.',
     why2_t: 'Coaching zonder het prijskaartje',
     why2_b: 'Een coach van vlees en bloed kost al snel meer dan 100 euro per maand. Safran geeft je het plan, de check-ins en de eerlijke duwtjes voor een fractie daarvan, dag en nacht.',
     why3_t: 'Eten waar je écht zin in hebt',
-    why3_b: 'Geen verboden voedsel, geen levenslang kip met broccoli. Je plan is gebouwd rond recepten die jij lekker vindt, en het beweegt mee met je week.',
+    why3_b: 'Geen verboden voedsel, geen levenslang kip met broccoli. Je plan is gebouwd rond recepten die jij lekker vindt, houdt rekening met je allergieën en beweegt mee met je week.',
     badge_top: 'Download in de',
-    how_title: 'Wat kan je doen met |Safran?|',
+    how_title: 'Wat je kunt doen |met Safran.|',
     include_items: [
-      ['Typen, foto of gewoon inspreken', 'Typ "kipwrap gehad", maak een foto van je bord of een etiket, of spreek het in. Safran herkent de ingrediënten, rekent de cijfers uit, en met één tik staat het in je dagboek.'],
-      ['Recepten uit je feed', 'Zie je een recept op Instagram of TikTok? Plak de link en het staat in je bibliotheek, met ingrediënten, macro’s en bereiding erbij. Koken, loggen en delen met één link.'],
-      ['Een plan dat met je meebeweegt', 'Elke week maakt Safran de balans op: calorieën, training, stappen. Liep je week anders? Dan zie je meteen wat dat betekent voor je doel, en wat je eraan kunt doen. Jij beslist, met één tik.'],
-      ['Weekmenu’s naar jouw smaak', 'Twee weken aan recepten die je écht lekker vindt. Alles past binnen je calorieën, houdt rekening met je allergieën, en wisselen kan altijd.'],
+      ['Loggen zoals je appt', 'Typ "kipwrap gehad", stuur een foto van je bord, scan een barcode of spreek het in. Safran herkent wat je at, rekent de calorieën en macro’s uit en zet het met één tik in je dagboek. Barcodes? Dan komen de waarden rechtstreeks van het etiket.'],
+      ['Elke week wordt je plan slimmer', 'Elke week kijkt Safran terug: gemiddelde inname, dagen op doel, stappen en je gewichtstrend. Liep je week anders dan gepland? Dan zie je meteen wat dat doet met je doeldatum, en je calorieën worden bijgesteld.'],
+      ['Sla je favoriete recepten op', 'Zie je een recept op TikTok, Instagram of YouTube? Plak de link in de chat en Safran haalt de ingrediënten, bereiding en voedingswaarden eruit. Bewaar het in je bibliotheek en log het met één tik als je het kookt.'],
+      ['Weekmenu én boodschappenlijst', 'Vraag om een dagmenu of een weekplan en Safran stelt het samen uit je eigen recepten en de bibliotheek, afgestemd op je plan en doel. Zin in iets anders? Wissel een gerecht met één tik. De boodschappenlijst staat meteen klaar, gesorteerd per schap.'],
     ],
     coach_title: 'Zelfde kennis. |Vier karakters.|',
     coach_sub: 'Elke coach kent je plan, je dagboek en je doel. Hoe ze er met je over praten, dat kies jij.',
-    testi_title: 'Dit zeggen de |eerste gebruikers.|',
-    testi_items: [
-      { name: 'Emma', c: '#FFDCE9', text: 'Ik stuur gewoon een appje met wat ik heb gegeten, net als naar een vriendin. Nog nooit een tracker langer dan een week volgehouden, deze wel.' },
-      { name: 'Daan', c: '#E5FAFB', text: 'Linkje van een TikTok-recept geplakt en hij stond er meteen in, macro’s en alles erbij. Dezelfde avond nog gemaakt.' },
-      { name: 'Sofia', c: '#FEF8DC', text: 'Bij mn wekelijkse check-in bleek dat ik meer had gelopen dan gepland, dus mocht ik ineens hoger in mn kcal zitten! Ik hou van eten én ik wil mn doel halen, en Safran snapt allebei.' },
-      { name: 'Lucas', c: '#E6DFF1', text: 'Rex maakt grapjes over mn derde croissant, maar nooit over mij. Gek genoeg is dat precies wat me aan het loggen houdt.' },
-      { name: 'Tom', c: '#E5FAFB', text: 'Binnen twee minuten stond mijn hele plan klaar, zonder dat ik eerst een account hoefde aan te maken.' },
+    faq_title: 'Goede |vragen.|',
+    faq_items: [
+      ['Hoe nauwkeurig zijn de cijfers?', 'Barcodescans en etiketfoto\'s gebruiken de echte etiketwaarden. Getypte en gefotografeerde maaltijden zijn schattingen uit een voedingsdatabase plus AI-portiegrootte, meestal binnen 10 tot 15 procent, en je kunt elke regel aanpassen voordat je logt.'],
+      ['Heb ik een account nodig?', 'Nee. Je start als gast, zet je plan en logt je eerste maaltijden zonder je aan te melden. Met een account blijven je gegevens bewaard op al je apparaten en kun je Premium gratis proberen.'],
+      ['Wat kost het?', 'Safran proberen is gratis. Premium (onbeperkt coachen, fotologgen, wekelijkse check-ins, weekmenu\'s) begint met 3 dagen gratis, daarna een abonnement per maand of per jaar via de App Store. Opzeggen kan altijd in je Apple-instellingen.'],
+      ['Wat gebeurt er met mijn gegevens?', 'Je dagboek, foto\'s en chats staan in de eigen database van Safran op servers in de EU en worden nooit verkocht of voor advertenties gebruikt. Tekst en foto\'s die je logt gaan naar een AI-leverancier om voedingswaarden te schatten; die gegevens worden niet gebruikt om modellen te trainen. Je kunt je account, met alles erin, vanuit de app verwijderen.'],
+      ['Is Safran medisch advies?', 'Nee. Safran is een voedings- en leefstijlcoach, geen arts of diëtist. Overleg met een professional voor grote veranderingen, zeker als je zwanger bent, een aandoening hebt of een geschiedenis met een eetstoornis.'],
+      ['Komt er een Android-versie?', 'Safran start op iPhone. Android staat op de planning; laat je e-mailadres achter via support en we houden je op de hoogte.'],
     ],
     hero_ui: {
       msgs: [
-        ['sam', 'Hoi, ik ben Sam. Waar gaan we naartoe werken?'],
+        ['sam', 'Hoi, ik ben Safran, je AI health coach. Wat wil je bereiken?'],
         ['user', 'Ik wil van 73 naar 66 kg'],
         ['sam', 'Helder. Hoe ziet je week eruit: trainingen, stappen?'],
         ['user', '2 trainingen, zo’n 8.000 stappen per dag'],
         ['plan'],
         ['sam', 'Dat is 66 kg over ongeveer 15 weken, rond 27 oktober. 1.550 kcal per dag, met eten waar je echt van houdt. Geen hypes, geen verboden voedsel, wel resultaat. En je doet het niet alleen: ik sta er elke dag naast je. Eerste stap. Wat heb je vandaag gegeten?'],
         ['user', 'Ik heb eieren gehad als ontbijt'],
-        ['meal'],
         ['sam', 'Mooie eiwitstart. Alleen nul vezels, dus pak vandaag nog wat groente of havermout mee.'],
+        ['meal'],
       ],
       breakfast: {
         title: 'Ontbijt',
@@ -710,59 +743,8 @@ const T = {
         macros: [['p', '116 g', 'Eiwit'], ['c', '155 g', 'Koolhydraten'], ['f', '52 g', 'Vet']],
         chart: { start: '73 kg', end: '66 kg', months: ['Jul', 'Aug', 'Sep', 'Okt'] },
       },
-      sub: 'AI-gezondheidscoach',
+      sub: 'AI health coach',
       inputPh: 'Typ een bericht...',
-    },
-    include_recipe: {
-      msgs: [
-        ['user', 'https://vm.tiktok.com/ZGd9nDqEC/'],
-        ['sam', 'Gevonden. Ik lees het recept uit de post.'],
-        ['recipe'],
-        ['sam', 'Hoeveel porties zal ik loggen?'],
-        ['user', '2 porties'],
-        ['sam', 'Staat erin: 320 kcal en 12 g eiwit. Dan heb je vandaag nog 1.180 van je 1.840 kcal over.'],
-      ],
-      card: {
-        title: 'Sweet potato brownies 🍫',
-        src: 'Uit TikTok · mandipandeee',
-        kcal: '160 kcal',
-        servings: '/ portie · 8 porties',
-        rows: [
-          ['Zoete-aardappelpuree', '1 cup'],
-          ['Amandelpasta', '0,5 cup'],
-          ['Cacaopoeder', '0,25 cup'],
-          ['Eieren', '2 stuks'],
-          ['Vanille-extract', '1 snuf'],
-          ['Zeezout', '1 snuf'],
-          ['Suikervrije chocoladedruppels', '0,25 cup'],
-        ],
-        edit: 'Bewerk recept',
-        save: 'Recept opslaan',
-      },
-    },
-    include_chat: [
-      ['user', 'wat zal ik als lunch nemen?'],
-      ['sam', 'Je hebt vandaag nog 1.300 kcal en 60 g eiwit te gaan. Iets met brood en kaas?'],
-      ['photo'],
-      ['sam', 'Zuurdesemtoast met hüttenkäse en tomaat, toch? Hier is de uitsplitsing:'],
-      ['meal'],
-      ['user', 'log maar'],
-      ['sam', 'Gedaan, 456 kcal. Weer 21 g eiwit binnen, nog 39 te gaan. En nog 844 kcal voor vanavond.'],
-    ],
-    include_meal: {
-      title: 'Lunch',
-      total: '456 kcal',
-      totalLabel: 'Totaal',
-      macros: ['21g', '40g', '25g'],
-      rows: [
-        ['Zuurdesembrood', '2 sneetjes', '160 kcal', ['6g', '30g', '2g']],
-        ['Hüttenkäse', '100 g', '103 kcal', ['12g', '3g', '5g']],
-        ['Tomaat', '1 stuk', '22 kcal', ['1g', '5g', '0g']],
-        ['Olijfolie', '1 el', '119 kcal', ['0g', '0g', '14g']],
-        ['Sesamzaad', '1 tl', '52 kcal', ['2g', '2g', '4g']],
-      ],
-      edit: 'Bewerk maaltijd',
-      log: 'Log maaltijd',
     },
     cta_wordmark: 'AAN DE SLAG', cta_title: 'Je coach staat klaar. |Jij ook?|',
     cta_sub: 'Start zonder account. Binnen twee minuten staat je plan en is je eerste maaltijd gelogd.',
@@ -773,13 +755,13 @@ const T = {
     share_hint: 'Nog geen Safran? Installeer de app uit de App Store en tik daarna nog een keer op deze link. Het recept staat klaar om op te slaan.',
     servings: (n) => `${n} ${n === 1 ? 'portie' : 'porties'}`,
     coaches: [
-      { id: 'sage', name: 'Kim', style: 'Zacht · warm en bemoedigend', quote: 'Rustig betekent niet zwak. Kleine stappen, elke dag. Daar win je het mee.' },
-      { id: 'sam', name: 'Sam', style: 'In balans · steunend én eerlijk', quote: 'Ik sta achter je én ik ben eerlijk tegen je. Meer heb je niet nodig.' },
-      { id: 'max', name: 'Max', style: 'Direct · recht voor zijn raap', quote: 'Elke dag telt. Doel stellen, doel halen, en weer door.' },
-      { id: 'rex', name: 'Rex', style: 'Tough love · hard maar eerlijk, nooit gemeen', quote: 'Geen hype, geen shortcuts. Jij doet het werk, de resultaten volgen vanzelf.' },
+      { id: 'sage', name: 'Kim', style: 'Warm · rustig en bemoedigend', quote: 'Rustig is niet zwak. Kleine dingen, elke dag herhaald, winnen het van elke snelle truc.' },
+      { id: 'sam', name: 'Sam', style: 'Nuchter · steunend én eerlijk', quote: 'Ik sta achter je én ik ben eerlijk tegen je. Meer heb je niet nodig.' },
+      { id: 'max', name: 'Max', style: 'Gedreven · elke dag een doel', quote: 'Eén doel voor vandaag, dat halen we. En morgen weer.' },
+      { id: 'rex', name: 'Rex', style: 'Streng · hard maar eerlijk, nooit gemeen', quote: 'Er is geen geheim. Eet het plan, log het eten, herhaal.' },
     ],
-    privacy: {"title": "Privacy & gegevens", "intro": "Safran werkt met gevoelige dingen: wat je eet, je gewicht, je doelen. Hier lees je precies hoe daarmee wordt omgegaan, in gewone taal.", "sections": [["Wat Safran bewaart", "Je profiel en plan (doelen, lengte, gewicht, eetstijl), je eetdagboek, opgeslagen recepten, je chat met de coach en foto's die je toevoegt. Alles staat in de beveiligde database van Safran, gekoppeld aan je account, en wordt nooit verkocht of gedeeld met adverteerders."], ["Hoe AI wordt gebruikt", "Als je eten logt, een foto maakt of een recept importeert, wordt die tekst of afbeelding naar een AI-dienst gestuurd om ingrediënten en voedingswaarden te schatten; ook de antwoorden van je coach komen daarvandaan. Deze gegevens worden niet gebruikt om AI-modellen te trainen. Je naam en accountgegevens gaan nooit mee."], ["Apple Health (stappen)", "Zet je Health-synchronisatie aan, dan leest Safran precies een ding uit Apple Health: je dagelijkse stappentelling, zodat je beweging, stats en wekelijkse check-in kloppen. Health-gegevens worden nooit gebruikt voor advertenties of marketing, nooit verkocht en nooit gedeeld met derden. Je kunt de synchronisatie altijd stoppen op de stappenkaart, en bij het verwijderen van je account wordt je opgeslagen stappengeschiedenis gewist."], ["Diensten waar Safran op draait", "Je gegevens staan in een beveiligde database op servers in de EU. Voedingsschattingen en coachantwoorden komen van een vertrouwde AI-leverancier; wat daarheen gaat wordt niet gebruikt om AI-modellen te trainen. Abonnementen lopen via je App Store-account; Safran ziet nooit je betaalgegevens. Elke dienst verwerkt alleen wat nodig is voor zijn taak."], ["Hoe lang gegevens bewaard blijven", "Zolang je account bestaat. Verwijder je je account, dan worden je profiel, dagboek, recepten, chatgeschiedenis, foto's en stappengeschiedenis direct definitief gewist; restkopieën in back-ups verlopen kort daarna."], ["Wat jij bepaalt", "Je kunt elke maaltijd of elk recept aanpassen of verwijderen, van taal wisselen, en je hele account verwijderen onder Privacy & hulp. Dat wist je profiel, dagboek, recepten, chatgeschiedenis en foto's definitief. Wil je een kopie van je gegevens, neem dan contact op met support."], ["Jouw rechten", "Je kunt je gegevens altijd inzien, corrigeren, exporteren en verwijderen. De Europese privacywetgeving (AVG) is van toepassing. Voor een export of privacyvraag: support@safran.app."]], "updated": "Laatst bijgewerkt: 15 juli 2026"},
-    terms: {"title": "Servicevoorwaarden", "intro": "De korte versie: Safran helpt je eten en bewegen richting je doel, en jij blijft de baas over je eigen gezondheid. De volledige afspraken, in gewone taal:", "sections": [["De afspraak", "Door een account aan te maken of Safran te gebruiken ga je akkoord met deze voorwaarden en met ons privacybeleid. Ga je niet akkoord, gebruik de app dan niet. Je moet minimaal 16 jaar zijn om Safran te gebruiken."], ["Wat Safran is (en niet is)", "Safran is een AI-coach voor voeding en leefstijl. Calorieën en voedingswaarden zijn zorgvuldige schattingen, geen labuitslagen, en coachantwoorden worden door AI gegenereerd: controleer wat er gek uitziet. Safran is geen medisch advies, diagnose of behandeling. Raadpleeg altijd een arts of diëtist voor grote veranderingen, zeker als je zwanger bent, een aandoening hebt of een geschiedenis met een eetstoornis."], ["Je account", "Je kunt starten als gast; met een account blijven je gegevens bewaard op al je apparaten. Geef juiste informatie, houd je inloggegevens privé en gebruik een account per persoon. Jij bent verantwoordelijk voor wat er onder je account gebeurt."], ["Proefperiode en abonnement", "Safran biedt een gratis proefperiode en daarna een betaald abonnement via je App Store-account. Abonnementen verlengen automatisch tot je opzegt in je App Store-instellingen, minimaal 24 uur voor de verlengdatum. Prijzen zie je altijd in de app voordat je betaalt."], ["Eerlijk gebruik", "Misbruik de dienst niet: geen geautomatiseerd scrapen, reverse engineering, doorverkopen, omzeilen van gebruikslimieten of onwettige content. Bibliotheekrecepten en coachantwoorden zijn voor persoonlijk gebruik."], ["Jouw gegevens en ons werk", "Je dagboek, foto's en recepten blijven van jou; je geeft Safran toestemming om ze te verwerken om de dienst te laten werken, zoals beschreven in het privacybeleid. De app, het ontwerp, de coaches en de content zijn van Safran en mogen niet gekopieerd of commercieel gebruikt worden."], ["Geen garanties", "Safran wordt geleverd zoals hij is. Resultaten hangen van jou af; we garanderen geen gewichtsverandering of gezondheidsuitkomsten. Voor zover de wet het toelaat is de aansprakelijkheid van Safran beperkt tot wat je in de afgelopen 12 maanden voor de dienst hebt betaald."], ["Stoppen en wijzigingen", "Je kunt altijd stoppen door je account te verwijderen. Accounts die deze voorwaarden schenden kunnen we blokkeren. We kunnen deze voorwaarden bijwerken; belangrijke wijzigingen melden we in de app. Nederlands recht is van toepassing. Vragen: support@safran.app."]], "updated": "Laatst bijgewerkt: 15 juli 2026"},
+    privacy: {"title": "Privacy & gegevens", "intro": "Safran werkt met gevoelige dingen: wat je eet, je gewicht, je doelen. Hier lees je precies hoe daarmee wordt omgegaan, in gewone taal.", "sections": [["Wat Safran bewaart", "Je profiel en plan (doelen, lengte, gewicht, eetstijl), je eetdagboek, opgeslagen recepten, je chat met de coach en foto's die je toevoegt. Alles staat in de beveiligde database van Safran, gekoppeld aan je account, en wordt nooit verkocht of gedeeld met adverteerders."], ["Hoe AI wordt gebruikt", "Als je eten logt, een foto maakt of een recept importeert, wordt die tekst of afbeelding naar een AI-dienst gestuurd om ingrediënten en voedingswaarden te schatten; ook de antwoorden van je coach komen daarvandaan. Deze gegevens worden niet gebruikt om AI-modellen te trainen. Je naam en accountgegevens gaan nooit mee."], ["Apple Health (stappen)", "Zet je Health-synchronisatie aan, dan leest Safran precies een ding uit Apple Health: je dagelijkse stappentelling, zodat je beweging, stats en wekelijkse check-in kloppen. Health-gegevens worden nooit gebruikt voor advertenties of marketing, nooit verkocht en nooit gedeeld met derden. Je kunt de synchronisatie altijd stoppen op de stappenkaart, en bij het verwijderen van je account wordt je opgeslagen stappengeschiedenis gewist."], ["Diensten waar Safran op draait", "Je gegevens staan in een beveiligde database op servers in de EU. Voedingsschattingen en coachantwoorden komen van een vertrouwde AI-leverancier; wat daarheen gaat wordt niet gebruikt om AI-modellen te trainen. Abonnementen lopen via je App Store-account; Safran ziet nooit je betaalgegevens. Elke dienst verwerkt alleen wat nodig is voor zijn taak."], ["Hoe lang gegevens bewaard blijven", "Zolang je account bestaat. Verwijder je je account, dan worden je profiel, dagboek, recepten, chatgeschiedenis, foto's en stappengeschiedenis direct definitief gewist; restkopieën in back-ups verlopen kort daarna. Twee dingen blijven bewaard: anonieme gebruiksstatistieken die niet naar jou terug te leiden zijn (zoals hoe lang het account bestond, ongeveer hoeveel maaltijden zijn gelogd en de reden die je opgaf), en een gehashte markering van je e-mailadres zodat een gratis proefperiode niet twee keer gebruikt kan worden."], ["Wat jij bepaalt", "Je kunt elke maaltijd of elk recept aanpassen of verwijderen, van taal wisselen, en je hele account verwijderen onder Privacy & hulp. Dat wist je profiel, dagboek, recepten, chatgeschiedenis en foto's definitief. Wil je een kopie van je gegevens, neem dan contact op met support."], ["Jouw rechten", "Je kunt je gegevens altijd inzien, corrigeren, exporteren en verwijderen. De Europese privacywetgeving (AVG) is van toepassing. Voor een export of privacyvraag: support@safranapp.com."]], "updated": "Laatst bijgewerkt: 12 september 2026"},
+    terms: {"title": "Servicevoorwaarden", "intro": "De korte versie: Safran helpt je eten en bewegen richting je doel, en jij blijft de baas over je eigen gezondheid. De volledige afspraken, in gewone taal:", "sections": [["De afspraak", "Door een account aan te maken of Safran te gebruiken ga je akkoord met deze voorwaarden en met ons privacybeleid. Ga je niet akkoord, gebruik de app dan niet. Je moet minimaal 16 jaar zijn om Safran te gebruiken."], ["Wat Safran is (en niet is)", "Safran is een AI-coach voor voeding en leefstijl. Calorieën en voedingswaarden zijn zorgvuldige schattingen, geen labuitslagen, en coachantwoorden worden door AI gegenereerd: controleer wat er gek uitziet. Safran is geen medisch advies, diagnose of behandeling. Raadpleeg altijd een arts of diëtist voor grote veranderingen, zeker als je zwanger bent, een aandoening hebt of een geschiedenis met een eetstoornis."], ["Je account", "Je kunt starten als gast; met een account blijven je gegevens bewaard op al je apparaten. Geef juiste informatie, houd je inloggegevens privé en gebruik een account per persoon. Jij bent verantwoordelijk voor wat er onder je account gebeurt."], ["Proefperiode en abonnement", "Safran biedt een gratis proefperiode en daarna een betaald abonnement via je App Store-account. Abonnementen verlengen automatisch tot je opzegt in je App Store-instellingen, minimaal 24 uur voor de verlengdatum. Prijzen zie je altijd in de app voordat je betaalt."], ["Eerlijk gebruik", "Misbruik de dienst niet: geen geautomatiseerd scrapen, reverse engineering, doorverkopen, omzeilen van gebruikslimieten of onwettige content. Bibliotheekrecepten en coachantwoorden zijn voor persoonlijk gebruik."], ["Jouw gegevens en ons werk", "Je dagboek, foto's en recepten blijven van jou; je geeft Safran toestemming om ze te verwerken om de dienst te laten werken, zoals beschreven in het privacybeleid. De app, het ontwerp, de coaches en de content zijn van Safran en mogen niet gekopieerd of commercieel gebruikt worden."], ["Geen garanties", "Safran wordt geleverd zoals hij is. Resultaten hangen van jou af; we garanderen geen gewichtsverandering of gezondheidsuitkomsten. Voor zover de wet het toelaat is de aansprakelijkheid van Safran beperkt tot wat je in de afgelopen 12 maanden voor de dienst hebt betaald."], ["Stoppen en wijzigingen", "Je kunt altijd stoppen door je account te verwijderen. Accounts die deze voorwaarden schenden kunnen we blokkeren. We kunnen deze voorwaarden bijwerken; belangrijke wijzigingen melden we in de app. Nederlands recht is van toepassing. Vragen: support@safranapp.com."]], "updated": "Laatst bijgewerkt: 12 september 2026"},
   },
 };
 
@@ -812,6 +794,9 @@ document.querySelectorAll('[data-avatar]').forEach((el) => {
 });
 
 /* ============================ config ============================ */
+const BUILD_ID = '__BUILD_ID__'; // replaced by build.sh
+const APP_STORE_URL = 'https://apps.apple.com/app/id6794821755';
+const SUPPORT_EMAIL = 'support@safranapp.com';
 const SHARE_FN = 'https://xplvqnxxaqtsbdbsipps.supabase.co/functions/v1/shared-recipe';
 const RECIPE_IMG = 'https://xplvqnxxaqtsbdbsipps.supabase.co/storage/v1/object/public/recipe-images/';
 
@@ -836,13 +821,13 @@ function applyLang() {
   setTitle('why-title', t('why_title'));
   setTitle('coach-title', t('coach_title'));
   setTitle('cta-title', t('cta_title'));
-  setTitle('testi-title', t('testi_title'));
+  setTitle('faq-title', t('faq_title'));
   document.getElementById('cta-wordmark').textContent = t('cta_wordmark');
   renderInfluencers();
   renderInclude();
   renderCoaches();
-  renderTestimonials();
-  renderHeroBubbles();
+  renderFaq();
+  renderHeroPhone();
   renderLegal();
   renderShareTexts();
 }
@@ -851,22 +836,16 @@ function applyLang() {
 /* Superhuman-style scatter: glass fragments of the real app floating over
  * the hero, clear of the headline (bottom-left) and the nav (top-center).
  * Percent-based positions so they scale with the viewport. */
-const NAME_COLOR = { sage: '#5B7A4F', sam: '#3E7EA6', max: '#A0672E', rex: '#41586B' };
 
 /* Shared chat-thread builder. msgs rows: ['user', text] (yellow, right),
- * ['photo'] (sent photo, right), ['sam', text], or a key from samExtras
+ * ['sam', text], or a key from samExtras
  * (a coach bubble with custom body, e.g. the recipe card). Avatar shows
  * only on the last coach bubble of a consecutive run, messenger-style. */
 function chatRowsHtml(msgs, samExtras = {}) {
-  return msgs.map(([who, text], i) => {
+  return msgs.map(([who, text]) => {
     if (who === 'user') return `<div class="bubble-user">${text}</div>`;
-    if (who === 'photo') return `<div class="chat-photo mesh">🥪<img src="assets/snap-toast.jpg" alt="" onerror="this.remove()" /></div>`;
-    // cards render as full-width standalone sheets, like in the app
-    if (who in samExtras) return `<div class="bubble-body chat-card">${samExtras[who]}</div>`;
-    const last = (msgs[i + 1] || [])[0] !== 'sam';
-    const avatar = last ? `<span class="bubble-avatar">${avatarSvg('sam', 30)}</span>` : '';
-    return `<div class="hchat-row${last ? '' : ' no-avatar'}">${avatar}
-      <div class="bubble-body"><p class="bubble-name" style="color:${NAME_COLOR.sam}">Sam</p><p>${text}</p></div></div>`;
+    if (who in samExtras) return `<div class="chat-card">${samExtras[who]}</div>`;
+    return `<div class="bubble-body"><p>${text}</p></div>`;
   }).join('');
 }
 
@@ -883,8 +862,8 @@ function macroIconSvg(kind, size = 12) {
   const [color, icon] = MACRO_META[kind];
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon.replaceAll('__C__', color)}</svg>`;
 }
-function macroChip(kind, val, size = 12) {
-  return `<span style="display:inline-flex;align-items:center;gap:3px;font-weight:700;color:#52514C;font-size:${size}px;white-space:nowrap">${macroIconSvg(kind, size + 1)}${val}</span>`;
+function macroChip(kind, val, size = 13) {
+  return `<span style="display:inline-flex;align-items:center;gap:4px;font-weight:600;color:#52514C;font-size:${size}px;line-height:1;white-space:nowrap">${macroIconSvg(kind, size + 2)}${val}</span>`;
 }
 function macroChips(p, c, f, size = 12) {
   return `${macroChip('p', p, size)}&nbsp;&nbsp;${macroChip('c', c, size)}&nbsp;&nbsp;${macroChip('f', f, size)}`;
@@ -894,25 +873,25 @@ function macroChips(p, c, f, size = 12) {
  * one row per ingredient, Edit/Log actions. Rendered as a coach bubble. */
 function mealCardHtml(m) {
   return `
-    <p style="font-size:13.5px;font-weight:800;margin:0">${m.title}</p>
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:2px">
-      <p style="margin:0"><b style="font-size:19px;letter-spacing:-.02em">${m.total}</b>
-        <span style="font-size:10.5px;color:#84827E;display:block">${m.totalLabel}</span></p>
-      <p style="margin:0">${macroChips(m.macros[0], m.macros[1], m.macros[2], 12)}</p>
+    <p style="font-size:15px;font-weight:600;margin:0;line-height:20px">${m.title}</p>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:4px">
+      <p style="margin:0"><b style="font-size:24px;line-height:28px;letter-spacing:-.3px;font-weight:800">${m.total}</b>
+        <span style="font-size:12px;line-height:16px;color:#84827E;display:block;font-weight:500">${m.totalLabel}</span></p>
+      <p style="margin:0 0 4px">${macroChips(m.macros[0], m.macros[1], m.macros[2], 13)}</p>
     </div>
     ${m.rows.map(([name, qty, kcal, mac]) => `
-      <div style="border-top:1px solid rgba(0,0,0,.06);margin-top:8px;padding-top:7px">
+      <div style="border-top:1px solid rgba(0,0,0,.06);margin-top:10px;padding-top:10px">
         <div style="display:flex;justify-content:space-between;gap:10px">
-          <span style="font-size:12.5px;font-weight:600">${name}</span>
-          <span style="font-size:11.5px;color:#84827E;white-space:nowrap">${qty}</span>
+          <span style="font-size:15px;font-weight:500;line-height:20px">${name}</span>
+          <span style="font-size:13px;color:#84827E;white-space:nowrap;line-height:20px">${qty}</span>
         </div>
-        <p style="font-size:11px;margin:2px 0 0;display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-          <b style="color:#2E7D4F">${kcal}</b> ${mac ? macroChips(mac[0], mac[1], mac[2], 10.5) : ''}
+        <p style="font-size:13px;margin:3px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;line-height:18px">
+          <b style="color:#2E7D4F;font-weight:700">${kcal}</b> ${mac ? macroChips(mac[0], mac[1], mac[2], 12) : ''}
         </p>
       </div>`).join('')}
-    <div style="display:flex;gap:8px;margin-top:12px">
-      <span style="flex:1;text-align:center;background:rgba(0,0,0,.05);border-radius:999px;padding:9px 0;font-size:12.5px;font-weight:700">${m.edit}</span>
-      <span style="flex:1;text-align:center;background:#F9E27D;border-radius:999px;padding:9px 0;font-size:12.5px;font-weight:800;box-shadow:0 4px 12px rgba(249,226,125,.5)">${m.log}</span>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <span class="app-btn">${m.edit}</span>
+      <span class="app-btn primary">${m.log}</span>
     </div>`;
 }
 
@@ -920,120 +899,118 @@ function mealCardHtml(m) {
  * hero phone and the include showcase. */
 function phoneScreenHtml(msgs, samExtras) {
   const ui = t('hero_ui');
-  return `
-    <div class="hero-phone-head">
-      ${safranMark(30)}
+  return `<div class="app">
+    <div class="app-head">
+      ${safranMark(40)}
       <div>
-        <p class="ph-title">SAFRAN</p>
+        <p class="ph-title">Safran</p>
         <p class="ph-sub">${ui.sub}</p>
       </div>
+      <div class="ph-avatar">A</div>
     </div>
     <div class="hero-chat">${chatRowsHtml(msgs, samExtras)}</div>
-    <div class="hero-phone-input">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#84827E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z"/><circle cx="12" cy="13" r="3"/></svg>
+    <div class="app-input">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52514C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z"/><circle cx="12" cy="13" r="3"/></svg>
       <span style="flex:1">${ui.inputPh}</span>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#52514C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
-    </div>`;
+      <span class="mic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52514C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></span>
+    </div>
+  </div>`;
 }
 /* Onboarding plan card, mirroring the app's "Your plan is set" sheet:
  * hero kcal, macro trio with labels, weight-projection curve. */
 function planCardHtml(p) {
   const MACRO_COLOR = { p: '#BD5536', c: '#D6A12E', f: '#8A5A86' };
   return `
-    <p style="font-size:14.5px;font-weight:800;margin:0">${p.title}</p>
-    <p style="margin:4px 0 0"><b style="font-size:24px;letter-spacing:-.02em">${p.kcal}</b>
-      <span style="font-size:11px;color:#84827E"> ${p.kcalLabel}</span></p>
+    <p style="font-size:15px;font-weight:600;line-height:20px;margin:0">${p.title}</p>
+    <p style="margin:4px 0 0"><b style="font-size:24px;line-height:28px;letter-spacing:-.3px;font-weight:800">${p.kcal}</b>
+      <span style="font-size:12px;color:#84827E;font-weight:500"> ${p.kcalLabel}</span></p>
     <div style="display:flex;gap:20px;margin-top:10px">
       ${p.macros.map(([kind, val, label]) => `
         <div>
-          <div style="display:flex;align-items:center;gap:4px;font-weight:800;font-size:13.5px">${macroIconSvg(kind, 13)}${val}</div>
-          <div style="font-size:10.5px;font-weight:700;color:${MACRO_COLOR[kind]};margin-top:1px">${label}</div>
+          <div style="display:flex;align-items:center;gap:4px;font-weight:700;font-size:14px;line-height:18px">${macroIconSvg(kind, 14)}${val}</div>
+          <div style="font-size:12px;font-weight:600;color:${MACRO_COLOR[kind]};margin-top:1px;line-height:16px">${label}</div>
         </div>`).join('')}
     </div>
-    <svg viewBox="0 0 240 96" style="width:100%;margin-top:10px;display:block">
-      <path d="M12 22 C70 26 120 60 228 68 L228 82 L12 82 Z" fill="rgba(0,0,0,.05)"/>
-      <path d="M12 22 C70 26 120 60 228 68" stroke="#52514C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <circle cx="12" cy="22" r="3.5" fill="#52514C"/>
-      <circle cx="228" cy="68" r="3.5" fill="#52514C"/>
-      <text x="6" y="12" font-size="11" font-weight="700" fill="#52514C">${p.chart.start}</text>
-      <text x="234" y="56" text-anchor="end" font-size="11" font-weight="700" fill="#52514C">${p.chart.end}</text>
-      ${p.chart.months.map((m, i) => `<text x="${[12, 84, 156, 228][i]}" y="94" font-size="9.5" fill="#84827E" ${i === 3 ? 'text-anchor="end"' : i === 0 ? '' : 'text-anchor="middle"'}>${m}</text>`).join('')}
+    <svg viewBox="0 0 320 84" style="width:100%;margin-top:10px;display:block">
+      <path d="M14 20 C90 24 160 52 306 60 L306 72 L14 72 Z" fill="rgba(0,0,0,.05)"/>
+      <path d="M14 20 C90 24 160 52 306 60" stroke="#52514C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="14" cy="20" r="3.5" fill="#52514C"/>
+      <circle cx="306" cy="60" r="3.5" fill="#52514C"/>
+      <text x="6" y="10" font-size="12" font-weight="700" fill="#52514C">${p.chart.start}</text>
+      <text x="314" y="48" text-anchor="end" font-size="12" font-weight="700" fill="#52514C">${p.chart.end}</text>
+      ${p.chart.months.map((m, i) => `<text x="${[14, 111, 208, 306][i]}" y="83" font-size="11" fill="#84827E" ${i === 3 ? 'text-anchor="end"' : i === 0 ? '' : 'text-anchor="middle"'}>${m}</text>`).join('')}
     </svg>`;
 }
 
-/* Recipe import card (Recipes-from-your-feed tab): thumbnail, source,
- * macros, full ingredient list, Edit/Save — the app's import card. */
-function recipeCardHtml(c) {
-  return `
-    <div style="display:flex;gap:12px;align-items:flex-start">
-      <div class="mesh" style="position:relative;flex:0 0 54px;width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden">🍫<img src="assets/brownies.jpg" alt="" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/></div>
-      <div style="min-width:0">
-        <p style="font-size:13.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;margin:0;line-height:1.3">${c.title}</p>
-        <p style="font-size:12px;color:#84827E;margin:2px 0 0">${c.src}</p>
-        <p style="font-size:13px;margin:4px 0 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <b style="color:#2E7D4F">${c.kcal}</b> ${macroChips('6g', '15g', '10g', 11.5)}
-        </p>
-        <p style="font-size:11.5px;color:#84827E;margin:2px 0 0">${c.servings}</p>
-      </div>
-    </div>
-    <div style="border-top:1px solid rgba(0,0,0,.06);margin-top:10px;padding-top:3px">
-      ${c.rows.map(([name, qty]) => `
-        <div style="display:flex;justify-content:space-between;gap:10px;padding:4.5px 0">
-          <span style="font-size:12.5px;font-weight:600">${name}</span>
-          <span style="font-size:11.5px;color:#84827E;white-space:nowrap">${qty}</span>
-        </div>`).join('')}
-    </div>
-    <div style="display:flex;gap:8px;margin-top:10px">
-      <span style="flex:1;text-align:center;background:rgba(0,0,0,.05);border-radius:999px;padding:9px 0;font-size:13px;font-weight:700">${c.edit}</span>
-      <span style="flex:1;text-align:center;background:#F9E27D;border-radius:999px;padding:9px 0;font-size:13px;font-weight:800;box-shadow:0 4px 12px rgba(249,226,125,.5)">${c.save}</span>
-    </div>`;
-}
-
-function renderHeroBubbles() {
-  const wrap = document.getElementById('hero-bubbles');
-  if (!wrap) return;
-  wrap.innerHTML = '';
+function renderHeroPhone() {
   const ui = t('hero_ui');
-  const el = document.createElement('div');
-  el.className = 'hero-piece';
-  // right: 2.5rem = the container's px-10, mirroring the headline's left
-  // inset; top clears the nav capsule with the same breathing room.
-  Object.assign(el.style, { top: '6.5rem', right: '2.5rem' });
-  el.style.animationDelay = '0.3s';
-  el.innerHTML = `<div class="bubble-float">
-    <div class="hero-phone">
-      <div class="hero-phone-screen mesh">${phoneScreenHtml(ui.msgs, { plan: planCardHtml(ui.plan), meal: mealCardHtml(ui.breakfast) })}</div>
-    </div>
-  </div>`;
-  wrap.appendChild(el);
-  startChatAutoScroll(el.querySelector('.hero-chat'));
+  document.getElementById('hero-phone').innerHTML =
+    `<div class="hero-phone-screen mesh">${phoneScreenHtml(ui.msgs, { plan: planCardHtml(ui.plan), meal: mealCardHtml(ui.breakfast) })}</div>`;
+  heroScroll.measure();
+  heroScroll.apply();
 }
 
-/* Slow ping-pong autoscroll through a conversation; pauses while the
- * visitor hovers so they can read or scroll themselves. Per-screen: the
- * loop self-cancels once its box leaves the DOM (e.g. language switch). */
-function startChatAutoScroll(box) {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  let paused = false;
-  box.addEventListener('pointerenter', () => { paused = true; });
-  box.addEventListener('pointerleave', () => { paused = false; });
-  let dir = 1;
-  let wait = 140; // ~2.3s pause before starting / at each end
-  const step = () => {
-    if (!box.isConnected) return; // replaced by a re-render: stop this loop
-    if (!paused) {
-      if (wait > 0) wait--;
-      else {
-        box.scrollTop += 0.4 * dir;
-        const max = box.scrollHeight - box.clientHeight;
-        if (dir === 1 && box.scrollTop >= max - 1) { dir = -1; wait = 170; }
-        else if (dir === -1 && box.scrollTop <= 1) { dir = 1; wait = 170; }
-      }
+/* Scroll-driven hero. progress p in [0,1] over the runway:
+ *   0   – .35  zoom: phone scales up and slides to the vertical centre of
+ *              the stage while the copy fades up and out
+ *   .35 – 1    story: the chat's scrollTop follows p, so the conversation
+ *              plays as the visitor scrolls (and rewinds when they scroll up)
+ * Everything is measured, nothing hard-coded: the phone's final scale is
+ * capped so it always fits the viewport with a margin. */
+const heroScroll = (() => {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let runway, stage, copy, wrap, hint, chat;
+  let copyH = 0, phoneH = 0, phoneTop = 0, endScale = 1, endShift = 0, maxScroll = 0;
+  const ZOOM_END = 0.35;
+  const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+  const ease = (x) => 1 - Math.pow(1 - x, 3);
+  function measure() {
+    runway = document.getElementById('hero'); stage = runway?.querySelector('.hero-stage');
+    copy = document.getElementById('hero-copy'); wrap = document.getElementById('hero-phone-wrap');
+    hint = document.getElementById('hero-hint'); chat = wrap?.querySelector('.hero-chat');
+    if (!runway || !wrap) return;
+    wrap.style.transform = ''; copy.style.transform = '';
+    const vh = innerHeight;
+    copyH = copy.getBoundingClientRect().height;
+    const pr = wrap.getBoundingClientRect(); const sr = stage.getBoundingClientRect();
+    phoneH = pr.height; phoneTop = pr.top - sr.top;
+    // The nav capsule is fixed at the top: the phone lives in the band below
+    // it. Scale to fit that band (it may shrink on short windows), never above 1.18.
+    const nav = document.querySelector('nav');
+    const bandTop = (nav ? nav.getBoundingClientRect().bottom : 0) + 16;
+    const band = vh - bandTop - 24;
+    endScale = clamp(band / phoneH, 0.55, 1.18);
+    // translate so the (top-origin) scaled phone is centred in the band
+    endShift = bandTop + (band - phoneH * endScale) / 2 - phoneTop;
+    maxScroll = chat ? chat.scrollHeight - chat.clientHeight : 0;
+  }
+  function progress() {
+    const r = runway.getBoundingClientRect();
+    return clamp(-r.top / (r.height - innerHeight), 0, 1);
+  }
+  function apply() {
+    if (!runway || !wrap || reduced) return;
+    const p = progress();
+    const z = ease(clamp(p / ZOOM_END, 0, 1));
+    const scale = 1 + (endScale - 1) * z;
+    const outro = ease(clamp((p - 0.85) / 0.15, 0, 1));
+    wrap.style.transform = `translateY(${(endShift * z - 32 * outro).toFixed(1)}px) scale(${(scale * (1 - 0.04 * outro)).toFixed(3)})`;
+    copy.style.opacity = String(1 - z);
+    copy.style.transform = `translateY(${(-40 * z).toFixed(1)}px)`;
+    copy.style.pointerEvents = z > 0.6 ? 'none' : '';
+    if (hint) hint.style.opacity = String(1 - clamp(p / 0.12, 0, 1));
+    if (chat && maxScroll > 0) {
+      const c = clamp((p - ZOOM_END) / (1 - ZOOM_END), 0, 1);
+      chat.scrollTop = c * maxScroll;
     }
-    requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
+  }
+  let ticking = false;
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { apply(); ticking = false; }); } }, { passive: true });
+  addEventListener('resize', () => { measure(); apply(); });
+  new ResizeObserver(() => { measure(); apply(); }).observe(document.getElementById('hero-phone'));
+  return { measure, apply };
+})();
+
 function setTitle(id, text) {
   const el = document.getElementById(id);
   el.innerHTML = accentHtml(text);
@@ -1041,97 +1018,114 @@ function setTitle(id, text) {
   el.classList.add('is-in');
 }
 
-/* ================= include showcase (Cal-AI-style tabs) ================= */
-let includeIdx = 0;
-const INCLUDE_EMOJI = ['💬', '📲', '🔁', '📅'];
+/* ================= "What you can do": scroll-driven chapters ================= */
+/* Runway progress p in [0,1] is split evenly over the chapters; the active
+ * chapter owns the phone, its card unfolds, and (chat chapters) the thread's
+ * scrollTop follows the within-chapter progress. Clicking a card scrolls the
+ * page to the middle of that chapter's slice. */
+let includeIdx = -1;
 function renderInclude() {
   const items = t('include_items');
-  if (includeIdx >= items.length) includeIdx = 0;
-  const cards = document.getElementById('include-cards');
-  cards.innerHTML = items
+  document.getElementById('include-cards').innerHTML = items
     .map(
       ([title, body], i) => `
-    <button data-include="${i}" class="w-full text-left rounded-2xl border p-6 transition-all duration-300 ${
-      i === includeIdx
-        ? 'bg-white shadow-xl shadow-black/10 border-black/10'
-        : 'bg-white/45 border-white/60 hover:bg-white/70'
-    }">
-      <h3 class="display text-xl sm:text-2xl">${title}</h3>
-      <p class="text-[#84827E] leading-relaxed mt-2">${body}</p>
-    </button>`
+    <div data-include="${i}" class="include-card rounded-2xl border px-5 py-4 sm:px-6 sm:py-5 bg-white/45 border-white/60">
+      <div class="flex items-baseline gap-4">
+        <span class="text-[11px] font-bold tracking-[0.2em] text-[#84827E] shrink-0">0${i + 1}</span>
+        <h3 class="display text-lg sm:text-2xl">${title}</h3>
+      </div>
+      <div class="include-body"><p class="text-[#84827E] leading-relaxed text-[15px] sm:text-base pl-8">${body}</p></div>
+    </div>`
     )
     .join('');
-  document.getElementById('include-dots').innerHTML = items
-    .map(
-      (_, i) => `<span class="w-2 h-2 rounded-full ${i === includeIdx ? 'bg-[#52514C]' : 'bg-black/15'}"></span>`
-    )
-    .join('');
-  // Screen: tabs 1-2 are live chats (logging flow; recipe import); the rest
-  // use a real shot when assets/include-N.png exists, placeholder otherwise.
-  const img = document.getElementById('include-img');
-  const ph = document.getElementById('include-placeholder');
-  let chat = document.getElementById('include-chat');
-  if (includeIdx <= 1) {
-    img.classList.add('hidden');
-    ph.classList.add('hidden');
-    if (!chat) {
-      chat = document.createElement('div');
-      chat.id = 'include-chat';
-      chat.className = 'absolute inset-0 flex flex-col';
-      document.getElementById('include-screen').appendChild(chat);
-    }
-    chat.classList.remove('hidden');
-    chat.innerHTML = includeIdx === 0
-      ? phoneScreenHtml(t('include_chat'), { meal: mealCardHtml(t('include_meal')) })
-      : phoneScreenHtml(t('include_recipe').msgs, { recipe: recipeCardHtml(t('include_recipe').card) });
-    startChatAutoScroll(chat.querySelector('.hero-chat'));
-    return;
+  document.getElementById('include-dots').innerHTML = items.map(() => '<span></span>').join('');
+  includeIdx = -1;           // force a screen re-render (language switch)
+  includeScroll();
+}
+
+/* Real captures per chapter (assets/include-N.webp). Two <img> layers:
+ * the incoming one fades in over the outgoing one. */
+let shotLayer = 0;
+function showIncludeScreen(idx) {
+  const shots = document.querySelectorAll('.include-shot');
+  const next = shots[shotLayer ^= 1], prev = shots[shotLayer ^ 1];
+  // Per-language capture when one exists (include-1-nl.webp), otherwise the
+  // shared file. Drop `include-N-<lang>.webp` into assets/ and it is picked
+  // up automatically; no code change needed.
+  // ?v= is the build id (stamped by build.sh) so a redeploy is never served
+  // from a stale cache - including a cached 404 for a per-language file
+  // that has since been added.
+  const shared = `/assets/include-${idx + 1}.webp?v=${BUILD_ID}`;
+  next.onerror = () => { next.onerror = null; next.src = shared; };
+  next.src = `/assets/include-${idx + 1}-${lang}.webp?v=${BUILD_ID}`;
+  next.alt = t('include_items')[idx][0];
+  next.classList.add('is-on');
+  prev.classList.remove('is-on');
+}
+
+function howProgress() {
+  const runway = document.querySelector('.how-runway');
+  const r = runway.getBoundingClientRect();
+  return Math.min(Math.max(-r.top / (r.height - innerHeight), 0), 1);
+}
+
+function includeScroll() {
+  const cards = [...document.querySelectorAll('.include-card')];
+  if (cards.length === 0) return;
+  const n = cards.length;
+  const p = howProgress();
+  const active = Math.min(Math.floor(p * n), n - 1);
+  const sub = Math.min(Math.max(p * n - active, 0), 1);
+  if (active !== includeIdx) {
+    includeIdx = active;
+    showIncludeScreen(active);
+    cards.forEach((card, i) => {
+      const on = i === active;
+      card.classList.toggle('is-active', on);
+      card.classList.toggle('bg-white', on);
+      card.classList.toggle('shadow-xl', on);
+      card.classList.toggle('shadow-black/10', on);
+      card.classList.toggle('border-black/10', on);
+      card.classList.toggle('bg-white/45', !on);
+      card.classList.toggle('border-white/60', !on);
+    });
+    document.querySelectorAll('#include-dots span').forEach((d, i) => d.classList.toggle('is-on', i === active));
   }
-  if (chat) chat.classList.add('hidden');
-  img.classList.add('hidden');
-  ph.classList.remove('hidden');
-  img.onload = () => { img.classList.remove('hidden'); ph.classList.add('hidden'); };
-  img.onerror = () => { img.classList.add('hidden'); ph.classList.remove('hidden'); };
-  img.src = `assets/include-${includeIdx + 1}.png`;
-  document.getElementById('include-ph-emoji').textContent = INCLUDE_EMOJI[includeIdx];
-  document.getElementById('include-ph-title').textContent = items[includeIdx][0];
 }
 document.getElementById('include-cards').addEventListener('click', (e) => {
-  const btn = e.target.closest('[data-include]');
-  if (!btn) return;
-  includeIdx = Number(btn.dataset.include);
-  renderInclude();
+  const card = e.target.closest('.include-card');
+  if (!card) return;
+  const i = Number(card.dataset.include);
+  const n = document.querySelectorAll('.include-card').length;
+  const runway = document.querySelector('.how-runway');
+  const top = runway.getBoundingClientRect().top + scrollY;
+  const span = runway.offsetHeight - innerHeight;
+  // land a little INTO the chapter (10%), so the card is active and the chat has begun
+  scrollTo({ top: top + span * ((i + 0.1) / n), behavior: 'smooth' });
 });
+{
+  let ticking = false;
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { includeScroll(); ticking = false; }); } }, { passive: true });
+  addEventListener('resize', includeScroll);
+}
 
 /* ============================ sections ============================ */
 function renderInfluencers() {
-  const grid = document.getElementById('infl-grid');
-  const card = (r) => `
-    <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/15 hover:-translate-y-1.5 transition-transform duration-500 aspect-[2/3]" data-reveal>
-      <!-- full-bleed visual (real food photos slot in here later) -->
-      <div class="absolute inset-0"
-           style="background:radial-gradient(80% 70% at 30% 20%,${r.g[0]}66 0%,transparent 60%),radial-gradient(80% 80% at 75% 85%,${r.g[1]} 0%,transparent 70%),linear-gradient(160deg,${r.g[0]}33,${r.g[1]})"></div>
-      <!-- frosted detail overlay, Cal AI style -->
-      <div class="absolute inset-x-3 bottom-3 rounded-2xl bg-white/35 backdrop-blur-xl border border-white/50 shadow-lg p-4">
-        <p class="text-[10px] font-bold uppercase tracking-wide text-[#52514C]/70">${r.src}</p>
-        <h3 class="display text-lg leading-snug mt-0.5 text-[#52514C] min-h-[50px]">${r.title}</h3>
-        <p class="text-[13px] font-bold mt-1" style="color:#2E7D4F">${r.kcal} kcal <span class="text-[#52514C]/60 font-medium">${t('infl_per')}</span></p>
-        <div class="flex gap-2 mt-3">
-          <span class="flex-1 bg-[#F9E27D] text-center text-[12px] font-bold py-2 rounded-full shadow-sm">${t('infl_save')}</span>
-          <span class="flex-1 bg-white/85 text-center text-[12px] font-bold py-2 rounded-full shadow-sm">${t('infl_log')}</span>
-        </div>
+  const items = t('infl_recipes');
+  // Desktop poster card (2:3, frosted detail overlay, two actions).
+  const poster = (r) => `
+    <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/15 aspect-[2/3]" data-reveal>
+      <img class="absolute inset-0 w-full h-full object-cover" src="/assets/recipe-${r.img}.webp?v=${BUILD_ID}" alt="${r.title}" loading="lazy" decoding="async" />
+      <div class="absolute inset-x-2.5 bottom-2.5 lg:inset-x-3 lg:bottom-3 rounded-2xl bg-white/60 backdrop-blur-xl backdrop-saturate-150 border border-white/70 shadow-lg shadow-black/10 p-3 lg:p-4">
+        <p class="text-[9px] lg:text-[10px] font-bold uppercase tracking-wide text-[#52514C]/70">${r.src}</p>
+        <h3 class="display text-[14px] lg:text-[16px] leading-snug mt-0.5 text-[#52514C]">${r.title}</h3>
+        <p class="text-[12px] lg:text-[13px] font-bold mt-1" style="color:#2E7D4F">${r.kcal} kcal <span class="text-[#52514C]/60 font-medium">${t('infl_per')}</span></p>
       </div>
     </div>`;
-  // Explicit column stacks: items [0,1] [2,3] [4,5]; outer columns padded
-  // down one step so the middle leads — deterministic, Cal AI's rhythm.
-  const items = t('infl_recipes');
-  grid.innerHTML = [0, 1, 2]
-    .map(
-      (c) => `
-    <div class="flex flex-col gap-5 ${c === 1 ? '' : 'lg:pt-14'}">
-      ${items.slice(c * 2, c * 2 + 2).map(card).join('')}
-    </div>`
-    )
+  // Five cards; the fan layout lives in CSS (.infl-item / .infl-N).
+  const grid = document.getElementById('infl-grid');
+  grid.innerHTML = items
+    .map((r, i) => `<div class="infl-item infl-${i} ${i >= 3 ? 'hidden lg:block' : ''}">${poster(r)}</div>`)
     .join('');
   grid.querySelectorAll('[data-reveal]').forEach(observeReveal);
 }
@@ -1141,10 +1135,10 @@ function renderCoaches() {
   grid.innerHTML = t('coaches')
     .map(
       (c, i) => `
-    <div class="coach-card bg-white/70 backdrop-blur rounded-3xl border border-white/70 p-7 shadow-xl shadow-black/5 text-center hover:-translate-y-1.5 transition-transform duration-500" data-reveal style="transition-delay:${i * 100}ms">
-      <div class="flex justify-center mb-4">${avatarSvg(c.id, 96)}</div>
+    <div class="coach-card bg-white/70 backdrop-blur rounded-3xl border border-white/70 p-6 shadow-xl shadow-black/5 text-center hover:-translate-y-1.5 transition-transform duration-500" data-reveal style="transition-delay:${i * 100}ms">
+      <div class="flex justify-center mb-3">${avatarSvg(c.id, 84)}</div>
       <h3 class="display text-2xl">${c.name}</h3>
-      <p class="text-xs text-[#84827E] font-semibold mt-1 mb-4">${c.style}</p>
+      <p class="text-xs text-[#84827E] font-semibold mt-0.5 mb-3">${c.style}</p>
       <p class="text-[15px] leading-relaxed">“${c.quote}”</p>
     </div>`
     )
@@ -1152,26 +1146,31 @@ function renderCoaches() {
   grid.querySelectorAll('[data-reveal]').forEach(observeReveal);
 }
 
-/* SAMPLE testimonials: swap in real beta-tester quotes before launch.
- * Cal AI layout: five cards, three on top, two centered below. */
-function renderTestimonials() {
-  const grid = document.getElementById('testi-grid');
-  const card = (item, i) => `
-    <div class="bg-white/70 backdrop-blur rounded-3xl border border-white/70 p-7 shadow-xl shadow-black/5" data-reveal style="transition-delay:${i * 90}ms">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[#52514C]" style="background:${item.c}">${item.name[0]}</div>
-        <div>
-          <p class="font-bold text-[15px]">${item.name}</p>
-          <p class="text-[11px] text-[#D6A12E] tracking-wide">★★★★★</p>
-        </div>
-      </div>
-      <p class="text-[15px] leading-relaxed text-[#52514C]">“${item.text}”</p>
-    </div>`;
-  const items = t('testi_items');
-  grid.innerHTML = `
-    <div class="grid sm:grid-cols-3 gap-5">${items.slice(0, 3).map(card).join('')}</div>
-    <div class="grid sm:grid-cols-2 gap-5 mt-5 lg:max-w-[66%] mx-auto">${items.slice(3, 5).map(card).join('')}</div>`;
-  grid.querySelectorAll('[data-reveal]').forEach(observeReveal);
+/* FAQ: native <details> accordions (keyboard + screen-reader friendly, no
+ * JS state) plus a FAQPage JSON-LD block regenerated per language. */
+function renderFaq() {
+  const list = document.getElementById('faq-list');
+  const items = t('faq_items');
+  list.innerHTML = items
+    .map(
+      ([q, a], i) => `
+    <details class="group bg-white/70 backdrop-blur rounded-2xl border border-white/70 shadow-sm open:shadow-xl open:shadow-black/5 transition-shadow" data-reveal style="transition-delay:${i * 60}ms">
+      <summary class="flex items-center justify-between gap-6 cursor-pointer list-none px-6 py-5 display text-lg sm:text-xl">
+        <span>${q}</span>
+        <svg class="w-5 h-5 shrink-0 text-[#84827E] transition-transform duration-300 group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </summary>
+      <p class="px-6 pb-6 -mt-1 text-[#84827E] leading-relaxed text-[15px]">${a}</p>
+    </details>`
+    )
+    .join('');
+  list.querySelectorAll('[data-reveal]').forEach(observeReveal);
+  let ld = document.getElementById('ld-faq');
+  if (!ld) { ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.id = 'ld-faq'; document.head.appendChild(ld); }
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  });
 }
 
 /* ============================ router ============================ */
@@ -1213,7 +1212,7 @@ function goTo(dest) {
       else history.pushState({}, '', '/');
       route();
     }
-    document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(anchor)?.scrollIntoView({ behavior: 'instant', block: 'start' });
     return;
   }
   // Document route (/, /privacy, /terms).
@@ -1293,6 +1292,13 @@ const io = new IntersectionObserver(
 );
 function observeReveal(el) { io.observe(el); }
 document.querySelectorAll('[data-reveal],[data-panel]').forEach(observeReveal);
+{
+  const deck = document.getElementById('infl-grid');
+  if (deck) {
+    if (reduced) deck.classList.add('is-open');
+    else new IntersectionObserver((es, obs) => es.forEach((e) => { if (e.isIntersecting) { deck.classList.add('is-open'); obs.disconnect(); } }), { threshold: 0.35 }).observe(deck);
+  }
+}
 
 /* Parallax. Offset derives from the PARENT's viewport position (the parent
  * is unaffected by this element's transform, so no feedback loop) and moves
@@ -1341,14 +1347,113 @@ function wrapWords(root) {
   });
 }
 
+
+/* ============================ page gradient ============================ */
+/* The app's MeshBackground, live: cream base with the five radial blooms from
+ * the spec (same colours, centres, radii, 92% peak, 0.55 mid-stop, soft rim),
+ * composited in the same order. Each bloom drifts on its own slow Lissajous
+ * path and breathes a little, so the page feels alive without ever leaving
+ * the app's palette. Fine grain on top. Fixed behind the whole page; renders
+ * while the tab is visible; skipped for prefers-reduced-motion or without
+ * WebGL (the body's CSS .mesh then shows). */
+const PAGE_GRADIENT = {
+  speed: 0.06,   // drift pace; 0.03 barely moves, 0.12 clearly flows
+  drift: 0.07,   // how far a bloom wanders, as a fraction of the viewport
+  breathe: 0.08, // radius change, fraction of the bloom radius
+  grain: 0.045,  // film grain strength (0 = off)
+  base: '#FDF7E7',
+  // exactly MeshBackground.STOPS, in paint order: [colour, x, y, r]
+  stops: [
+    ['#DECDEC', 0.5, 0.5, 0.6],   // lilac bloom, centre
+    ['#E5FAFB', -0.2, -0.2, 0.5], // mint, top-left
+    ['#E6DFF1', 0.9, 0.1, 0.5],   // lilac, top-right
+    ['#FEF8DC', -0.1, 0.8, 0.55], // pale yellow, bottom-left
+    ['#FFDCE9', 0.85, 0.9, 0.5],  // pink, bottom-right
+  ],
+};
+(function pageGradient() {
+  const fallback = () => document.body.classList.add('mesh');
+  const canvas = document.getElementById('page-gl');
+  if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return fallback();
+  const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'low-power' });
+  if (!gl) return fallback();
+  const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0., 1.); }`;
+  const fs = `
+    precision highp float;
+    uniform vec2 u_res; uniform float u_t, u_drift, u_breathe, u_grain;
+    uniform vec3 u_base;
+    uniform vec3 u_col[5]; uniform vec3 u_pos[5];   // pos = (x, y, r) in viewport fractions
+    const float PEAK = 0.92;
+    float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+    // the spec's three-stop radial: PEAK at centre, PEAK*.55 at 55%, 0 at the rim
+    float bloom(float d){
+      float a = d < 0.55 ? mix(PEAK, PEAK * 0.55, d / 0.55) : mix(PEAK * 0.55, 0.0, (d - 0.55) / 0.45);
+      return clamp(a, 0.0, 1.0);
+    }
+    void main(){
+      vec2 uv = gl_FragCoord.xy / u_res; uv.y = 1.0 - uv.y;          // y down, like the app
+      float base = max(u_res.x, u_res.y);
+      vec3 col = u_base;
+      for (int i = 0; i < 5; i++) {
+        float fi = float(i);
+        // slow Lissajous drift, unique per bloom, plus a gentle breathe
+        vec2 c = u_pos[i].xy + u_drift * vec2(sin(u_t * (0.7 + 0.13 * fi) + fi * 1.9), cos(u_t * (0.55 + 0.11 * fi) + fi * 0.8));
+        float r = u_pos[i].z * (1.0 + u_breathe * sin(u_t * (0.4 + 0.07 * fi) + fi * 2.3));
+        vec2 px = (uv - c) * u_res;                                    // pixel offset from centre
+        float d = length(px) / (r * base);
+        float a = d < 1.0 ? bloom(d) : 0.0;
+        col = mix(col, u_col[i], a);                                   // alpha-over, spec order
+      }
+      float g = (hash(gl_FragCoord.xy + fract(u_t * 37.0)) - 0.5) * u_grain;
+      gl_FragColor = vec4(col + g, 1.0);
+    }`;
+  const compile = (type, src) => { const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return sh; };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { console.warn('page gradient:', gl.getProgramInfoLog(prog)); return fallback(); }
+  gl.useProgram(prog);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = (n) => gl.getUniformLocation(prog, n);
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+  gl.uniform3fv(U('u_base'), hex(PAGE_GRADIENT.base));
+  gl.uniform3fv(U('u_col[0]'), new Float32Array(PAGE_GRADIENT.stops.flatMap((st) => hex(st[0]))));
+  gl.uniform3fv(U('u_pos[0]'), new Float32Array(PAGE_GRADIENT.stops.flatMap((st) => [st[1], st[2], st[3]])));
+  gl.uniform1f(U('u_drift'), PAGE_GRADIENT.drift); gl.uniform1f(U('u_breathe'), PAGE_GRADIENT.breathe);
+  gl.uniform1f(U('u_grain'), PAGE_GRADIENT.grain);
+  const uRes = U('u_res'), uT = U('u_t');
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h); gl.uniform2f(uRes, w, h); }
+  }
+  const start = performance.now();
+  function frame(now) {
+    if (!document.hidden) {
+      resize();
+      gl.uniform1f(uT, ((now - start) / 1000) * PAGE_GRADIENT.speed);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  canvas.style.opacity = '1';
+})();
+
 /* ============================ boot ============================ */
 document.getElementById('lang-toggle').addEventListener('click', () => {
   lang = lang === 'en' ? 'nl' : 'en';
   localStorage.setItem('safran_lang', lang);
   applyLang();
 });
+document.querySelectorAll('[data-store]').forEach((a) => { a.href = APP_STORE_URL; });
+document.querySelectorAll('[data-support]').forEach((a) => { a.href = `mailto:${SUPPORT_EMAIL}`; a.textContent = SUPPORT_EMAIL; });
 applyLang();
 route();
+if (document.fonts?.ready) document.fonts.ready.then(() => { heroScroll.measure(); heroScroll.apply(); });
+addEventListener('load', () => { heroScroll.measure(); heroScroll.apply(); });
 </script>
 </body>
 </html>
