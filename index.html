@@ -50,7 +50,7 @@
   "publisher": { "@type": "Organization", "name": "Safran", "url": "https://www.safranapp.com/", "email": "support@safranapp.com" }
 }
 </script>
-<meta name="theme-color" content="#ECE6ED" />
+<meta name="theme-color" content="#EFE8E9" />
 <meta http-equiv="Cache-Control" content="no-cache" />
 <link rel="stylesheet" href="/assets/site.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -70,7 +70,11 @@
       radial-gradient(55% 55% at -10% 80%,  #FEF8DCeb 0%, #FEF8DC81 55%, transparent 100%),
       radial-gradient(50% 50% at 85% 90%,   #FFDCE9eb 0%, #FFDCE981 55%, transparent 100%),
       radial-gradient(60% 60% at 50% 50%,   #DECDECeb 0%, #DECDEC81 55%, transparent 100%),
-      #FDF7E7;
+      /* cream base as its own layer, so the *colour* below can be the shade
+         iOS Safari tints its top bar with (it samples background-color, not
+         the gradient images, and ignores <meta theme-color>) */
+      linear-gradient(#FDF7E7, #FDF7E7);
+    background-color: #EFE8E9;
     background-attachment: fixed;
   }
   html, body { overflow-x: clip; }
