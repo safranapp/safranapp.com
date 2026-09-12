@@ -177,9 +177,16 @@
     /* Fixed geometry so the phone never moves between chapters: the stage
        starts below the nav, the phone takes the height that is left after a
        fixed-height title card + dots, and the card box has a constant height. */
-    .how-stage { justify-content: flex-start; padding-top: 5.5rem; }
+    .how-stage { justify-content: flex-start; padding-top: 4.25rem; }
     .how-stage > div { padding-top: 0 !important; }
-    .how-phone { width: calc((100vh - 5.5rem - 9.5rem) * 1170 / 2472); max-width: 320px; }
+    /* The phone gets what is left of the viewport after the nav gap above and
+       the title + dots that now sit between them and it; derive the width from
+       that height so the frame can never run past the fold and collide with
+       the next section. */
+    .how-phone { width: calc((100vh - 4.25rem - 8.5rem) * 1170 / 2472); max-width: 300px; }
+    @supports (height: 100svh) {
+      .how-phone { width: calc((100svh - 4.25rem - 8.5rem) * 1170 / 2472); }
+    }
     #include-cards { min-height: 4.5rem; display: flex; align-items: center; justify-content: center; }
     /* .how-stage prefix: beats the base rules that follow later in this sheet.
        On mobile the chapter is plain centred text under the phone: no card
@@ -195,7 +202,8 @@
        before the screenshot it describes, not after it. */
     .how-cards { order: 1; }
     .how-sticky-phone { order: 2; margin-top: .25rem; }
-    .include-dots { margin-top: 10px; margin-bottom: 2px; }
+    .include-dots { margin-top: 10px; margin-bottom: 6px; }
+    #include-cards { min-height: 3.75rem; }
   }
   @keyframes cardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   .include-dots { display: flex; justify-content: center; gap: 6px; margin-top: 14px; }
@@ -519,8 +527,8 @@
        emitted as FAQPage JSON-LD (see renderFaq) for rich results. -->
   <section id="faq" class="py-16 sm:py-24">
     <div class="max-w-3xl mx-auto px-6 sm:px-10">
-      <h2 class="display text-3xl sm:text-6xl leading-[1.02] text-center mb-12" id="faq-title"></h2>
-      <div id="faq-list" class="space-y-3"></div>
+      <h2 class="display text-3xl sm:text-6xl leading-[1.02] text-center mb-8 sm:mb-12" id="faq-title"></h2>
+      <div id="faq-list" class="space-y-2.5 sm:space-y-3"></div>
     </div>
   </section>
 
@@ -1204,11 +1212,11 @@ function renderFaq() {
     .map(
       ([q, a], i) => `
     <details class="group bg-white/70 backdrop-blur rounded-2xl border border-white/70 shadow-sm open:shadow-xl open:shadow-black/5 transition-shadow" data-reveal style="transition-delay:${i * 60}ms">
-      <summary class="flex items-center justify-between gap-6 cursor-pointer list-none px-6 py-5 display text-lg sm:text-xl">
+      <summary class="flex items-center justify-between gap-4 sm:gap-6 cursor-pointer list-none px-5 py-4 sm:px-6 sm:py-5 display text-[15px] sm:text-xl">
         <span>${q}</span>
-        <svg class="w-5 h-5 shrink-0 text-[#84827E] transition-transform duration-300 group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0 text-[#84827E] transition-transform duration-300 group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       </summary>
-      <p class="px-6 pb-6 -mt-1 text-[#84827E] leading-relaxed text-[15px]">${a}</p>
+      <p class="px-5 pb-5 sm:px-6 sm:pb-6 -mt-1 text-[#84827E] leading-relaxed text-[13.5px] sm:text-[15px]">${a}</p>
     </details>`
     )
     .join('');
