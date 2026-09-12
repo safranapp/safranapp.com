@@ -177,15 +177,15 @@
     /* Fixed geometry so the phone never moves between chapters: the stage
        starts below the nav, the phone takes the height that is left after a
        fixed-height title card + dots, and the card box has a constant height. */
-    .how-stage { justify-content: flex-start; padding-top: 4.25rem; }
+    .how-stage { justify-content: flex-start; padding-top: 3.75rem; }
     .how-stage > div { padding-top: 0 !important; }
     /* The phone gets what is left of the viewport after the nav gap above and
        the title + dots that now sit between them and it; derive the width from
        that height so the frame can never run past the fold and collide with
        the next section. */
-    .how-phone { width: calc((100vh - 4.25rem - 8.5rem) * 1170 / 2472); max-width: 300px; }
+    .how-phone { width: calc((100vh - 3.75rem - 6.75rem) * 1170 / 2472); max-width: 340px; }
     @supports (height: 100svh) {
-      .how-phone { width: calc((100svh - 4.25rem - 8.5rem) * 1170 / 2472); }
+      .how-phone { width: calc((100svh - 3.75rem - 6.75rem) * 1170 / 2472); }
     }
     #include-cards { min-height: 4.5rem; display: flex; align-items: center; justify-content: center; }
     /* .how-stage prefix: beats the base rules that follow later in this sheet.
