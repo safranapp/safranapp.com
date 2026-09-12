@@ -26,7 +26,7 @@ mkdir -p dist/nl
 sed -e 's#<meta property="og:image" content="https://www.safranapp.com/assets/og-image.png"#<meta property="og:image" content="https://www.safranapp.com/assets/og-image-nl.png"#' \
     -e 's#<meta name="twitter:image" content="https://www.safranapp.com/assets/og-image.png"#<meta name="twitter:image" content="https://www.safranapp.com/assets/og-image-nl.png"#' \
     -e 's#content="Safran – Your AI health coach"#content="Safran – Je AI health coach"#g' \
-    -e 's#content="Chat what you ate, snap a photo, import recipes from Instagram. Safran turns it into a plan that adjusts to your real life."#content="Typ wat je at, stuur een foto, importeer recepten van Instagram. Safran maakt er een plan van dat meebeweegt met je echte leven."#g' \
+    -e 's#content="Type what you ate, snap a photo or import a recipe from Instagram. Safran counts the calories and adjusts your plan every week."#content="Typ wat je at, stuur een foto of importeer een recept van Instagram. Safran telt de calorieën en past je plan elke week aan."#g' \
     -e 's#<meta property="og:locale" content="en_US" />#<meta property="og:locale" content="nl_NL" />#' \
     -e 's#<link rel="canonical" href="https://www.safranapp.com/" />#<link rel="canonical" href="https://www.safranapp.com/nl" />#' \
     dist/index.html > dist/nl/index.html

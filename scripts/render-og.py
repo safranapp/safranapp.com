@@ -44,17 +44,17 @@ COPY = {
         'out': 'og-image.png',
         'shot': 'include-1-en.webp',
         'head': ['Your AI', 'health coach'],
-        'sub': ['Chat what you ate, snap a photo, import',
-                'recipes. Safran plans the rest and adjusts',
-                'every week.'],
+        'sub': ['Type what you ate, snap a photo or import',
+                'a recipe. Safran counts the calories and',
+                'adjusts your plan every week.'],
     },
     'nl': {
         'out': 'og-image-nl.png',
         'shot': 'include-1-nl.webp',
         'head': ['Je AI', 'health coach'],
-        'sub': ['Typ wat je at, stuur een foto, importeer',
-                'recepten. Safran regelt de rest en stuurt',
-                'elke week bij.'],
+        'sub': ['Typ wat je at, stuur een foto of importeer',
+                'een recept. Safran telt de calorieën en',
+                'past je plan elke week aan.'],
     },
 }
 
