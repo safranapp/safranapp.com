@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+"""
+Render assets/og-image.png: the card link previews show (WhatsApp, iMessage,
+Slack, X, LinkedIn).
+
+The default was the bare app icon on cream, which reads as a placeholder in a
+chat thread. This puts the product on it: brand mesh, wordmark, the promise in
+one line, and a real screen from the app.
+
+    python3 scripts/render-og.py   ->  assets/og-image.png
+
+Stops match app/src/components/ui/MeshBackground.tsx (and the email header),
+so every brand surface is the same gradient.
+"""
+import io
+import os
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont
+import cairosvg
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+OUT = os.path.join(ROOT, 'assets', 'og-image.png')
+SHOT = os.path.join(ROOT, 'assets', 'include-1-en.webp')
+
+W, H = 1200, 630
+BASE = (0xFD, 0xF7, 0xE7)
+PEAK = 0.92
+INK = (0x52, 0x51, 0x4C)
+MUTED = (0x84, 0x82, 0x7E)
+
+STOPS = [
+    ('#DECDEC', 0.5, 0.5, 0.60),
+    ('#E5FAFB', -0.2, -0.2, 0.50),
+    ('#E6DFF1', 0.9, 0.1, 0.50),
+    ('#FEF8DC', -0.1, 0.8, 0.55),
+    ('#FFDCE9', 0.85, 0.9, 0.50),
+]
+
+FONT_DIR = '/usr/share/fonts/truetype/google-fonts'
+def font(name, size):
+    return ImageFont.truetype(os.path.join(FONT_DIR, name), size)
+
+
+def hex_rgb(h):
+    return np.array([int(h[i:i + 2], 16) for i in (1, 3, 5)], dtype=np.float64)
+
+
+# --- background mesh -------------------------------------------------------
+yy, xx = np.mgrid[0:H, 0:W].astype(np.float64)
+canvas = np.zeros((H, W, 3), dtype=np.float64) + np.array(BASE, dtype=np.float64)
+span = max(W, H)
+for colour, cx, cy, r in STOPS:
+    d = np.hypot(xx - cx * W, yy - cy * H) / (r * span)
+    a = np.where(
+        d < 0.55,
+        PEAK + (PEAK * 0.55 - PEAK) * (d / 0.55),
+        np.where(d < 1.0, PEAK * 0.55 * (1 - (d - 0.55) / 0.45), 0.0),
+    )
+    canvas = canvas * (1 - np.clip(a, 0, 1)[..., None]) + hex_rgb(colour) * np.clip(a, 0, 1)[..., None]
+
+img = Image.fromarray(np.clip(canvas, 0, 255).astype(np.uint8), 'RGB').convert('RGBA')
+
+# --- the phone, right side, bleeding off the bottom ------------------------
+PHONE_W, BEZEL, RADIUS = 330, 9, 52
+shot = Image.open(SHOT).convert('RGB')
+inner_w = PHONE_W - BEZEL * 2
+shot = shot.resize((inner_w, int(inner_w * shot.height / shot.width)), Image.LANCZOS)
+phone_h = shot.height + BEZEL * 2
+
+body = Image.new('RGBA', (PHONE_W, phone_h), (0, 0, 0, 0))
+ImageDraw.Draw(body).rounded_rectangle([0, 0, PHONE_W - 1, phone_h - 1], RADIUS, fill=(28, 28, 30, 255))
+screen = Image.new('RGBA', (inner_w, shot.height), (0, 0, 0, 0))
+mask = Image.new('L', (inner_w, shot.height), 0)
+ImageDraw.Draw(mask).rounded_rectangle([0, 0, inner_w - 1, shot.height - 1], RADIUS - BEZEL, fill=255)
+screen.paste(shot, (0, 0))
+screen.putalpha(mask)
+body.alpha_composite(screen, (BEZEL, BEZEL))
+
+px, py = 760, 96
+shadow = Image.new('RGBA', img.size, (0, 0, 0, 0))
+ImageDraw.Draw(shadow).rounded_rectangle(
+    [px + 10, py + 24, px + PHONE_W + 10, py + phone_h + 24], RADIUS, fill=(0, 0, 0, 60))
+from PIL import ImageFilter
+img.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(26)))
+img.alpha_composite(body, (px, py))
+
+# --- logo mark + wordmark --------------------------------------------------
+MARK = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <path d="M 76,120 L 76,104 C 76,98 46,100 46,78 C 46,58 62,50 69,53 C 73,36 87,30 100,30
+           C 113,30 127,36 131,53 C 138,50 154,58 154,78 C 154,100 124,98 124,104 L 124,120
+           Q 124,128 116,128 L 84,128 Q 76,128 76,120 Z"
+        fill="none" stroke="#52514C" stroke-width="11" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="78" y="143" width="44" height="14" rx="7" fill="none" stroke="#52514C" stroke-width="9"/>
+  <path d="M 84,166.5 A 16,16 0 0 0 116,166.5 Z" fill="#52514C"/>
+</svg>'''
+MARK_PX = 64
+mark = Image.open(io.BytesIO(cairosvg.svg2png(
+    bytestring=MARK.encode(), output_width=MARK_PX, output_height=MARK_PX))).convert('RGBA')
+
+L = 88                      # left margin
+img.alpha_composite(mark, (L - 6, 92))
+d = ImageDraw.Draw(img)
+d.text((L + 66, 108), 'SAFRAN', font=font('Poppins-Bold.ttf', 34), fill=INK)
+
+# headline, two lines, tight
+d.text((L, 214), 'Your AI', font=font('Poppins-Bold.ttf', 72), fill=INK)
+d.text((L, 292), 'health coach', font=font('Poppins-Bold.ttf', 72), fill=INK)
+
+for i, line in enumerate([
+    'Chat what you ate, snap a photo, import',
+    'recipes. Safran plans the rest and adjusts',
+    'every week.',
+]):
+    d.text((L, 404 + i * 40), line, font=font('Poppins-Regular.ttf', 27), fill=MUTED)
+
+img.convert('RGB').save(OUT, 'PNG', optimize=True)
+print(f'{OUT} ({os.path.getsize(OUT) // 1024} KB)')
