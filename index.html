@@ -89,12 +89,14 @@
     html { background: #EFE8E9; }
     body::before {
       content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      /* Two hues only. Four pastels at phone width read as a rainbow, so the
+         cyan and yellow are dropped and what is left is one lilac bloom high
+         and one blush low, both wide and faint enough to look like light
+         rather than bands. */
       background:
-        radial-gradient(60% 22% at 14% 30%, #E5FAFBd9 0%, transparent 100%),
-        radial-gradient(60% 22% at 88% 44%, #E6DFF1d9 0%, transparent 100%),
-        radial-gradient(65% 22% at 10% 64%, #FEF8DCd9 0%, transparent 100%),
-        radial-gradient(60% 20% at 90% 78%, #FFDCE9d9 0%, transparent 100%),
-        linear-gradient(to bottom, #EFE8E9 0%, #F8F3EC 13%, #F8F3EC 87%, #EFE8E9 100%);
+        radial-gradient(120% 45% at 82% 22%, #E6DFF199 0%, transparent 100%),
+        radial-gradient(120% 45% at 18% 82%, #FFDCE980 0%, transparent 100%),
+        linear-gradient(to bottom, #EFE8E9 0%, #F7F2EC 16%, #F7F2EC 84%, #EFE8E9 100%);
     }
   }
 
@@ -255,6 +257,14 @@
   /* Hero scrollytelling. The runway height is the scroll budget: 100vh of
      stage + 180vh of story (zoom, then the chat). */
   .hero-runway { height: 280vh; }
+  /* svh = the viewport with the browser chrome SHOWN, so these do not change
+     when iOS collapses the URL bar mid-scroll (100vh does, which makes the
+     sticky stage and the zoom target jump). */
+  @supports (height: 100svh) {
+    .hero-runway { height: 280svh; }
+    .hero-stage { height: 100svh; }
+    .how-stage { height: 100svh; }
+  }
   #hero-phone-wrap { transform-origin: 50% 0; }
   @media (prefers-reduced-motion: reduce) {
     .hero-runway { height: auto; padding-bottom: 6rem; }
@@ -388,8 +398,8 @@
         <p class="text-xs uppercase tracking-[0.25em] text-[#84827E] font-semibold mb-7 flex items-center justify-center gap-3">
           <span class="safran-mark" data-mark="18"></span><span data-i="hero_eyebrow"></span>
         </p>
-        <h1 class="display text-4xl sm:text-6xl lg:text-7xl leading-[1.0] text-[#52514C]" id="hero-title"></h1>
-        <p class="mt-6 text-lg sm:text-xl text-[#84827E] max-w-xl mx-auto leading-relaxed" data-i="hero_sub"></p>
+        <h1 class="display text-[34px] sm:text-6xl lg:text-7xl leading-[1.05] sm:leading-[1.0] text-[#52514C]" id="hero-title"></h1>
+        <p class="mt-5 sm:mt-6 text-base sm:text-xl text-[#84827E] max-w-xl mx-auto leading-relaxed" data-i="hero_sub"></p>
         <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
           <a href="/#download" data-nav="/#download" class="group inline-flex items-center gap-2.5 bg-[#F9E27D] hover:brightness-95 active:scale-95 text-[#52514C] font-bold text-base px-7 py-3.5 rounded-full transition-all duration-300 shadow-xl shadow-[#F9E27D]/50">
             <span data-i="nav_cta"></span>
@@ -412,8 +422,8 @@
   <section id="influencers" class="pt-16 sm:pt-24 overflow-x-clip">
     <div class="max-w-7xl mx-auto px-6 sm:px-10">
       <div class="max-w-3xl mx-auto text-center mb-12" data-reveal>
-        <h2 class="display text-4xl sm:text-6xl leading-[1.02]" id="infl-title"></h2>
-        <p class="text-lg text-[#84827E] mt-5 max-w-xl mx-auto" data-i="infl_sub"></p>
+        <h2 class="display text-3xl sm:text-6xl leading-[1.02]" id="infl-title"></h2>
+        <p class="text-base sm:text-lg text-[#84827E] mt-5 max-w-xl mx-auto" data-i="infl_sub"></p>
       </div>
       <!-- Three explicit column stacks (no CSS-columns auto-balancing, which
            kept eating the stagger): outer columns start one step below the
@@ -432,7 +442,7 @@
        scroll. Clicking a card jumps the scroll to that chapter. -->
   <section id="how" class="relative pt-16 sm:pt-24">
     <!-- title scrolls away normally; only phone + cards get pinned -->
-    <h2 class="display text-4xl sm:text-6xl leading-[1.02] text-center px-6 mb-4 sm:mb-8" id="how-title" data-reveal></h2>
+    <h2 class="display text-3xl sm:text-6xl leading-[1.02] text-center px-6 mb-4 sm:mb-8" id="how-title" data-reveal></h2>
     <div class="how-runway relative">
     <div class="how-stage sticky top-0 h-screen flex flex-col justify-center">
       <div class="max-w-7xl mx-auto w-full px-6 sm:px-10 pt-16 lg:pt-20">
@@ -457,20 +467,20 @@
   <section id="why" class="py-16 sm:py-24">
     <div class="max-w-7xl mx-auto px-6 sm:px-10">
       <div class="max-w-3xl mx-auto text-center mb-14" data-reveal>
-        <h2 class="display text-4xl sm:text-6xl leading-[1.02]" id="why-title"></h2>
-        <p class="text-lg text-[#84827E] mt-5" data-i="why_sub"></p>
+        <h2 class="display text-3xl sm:text-6xl leading-[1.02]" id="why-title"></h2>
+        <p class="text-base sm:text-lg text-[#84827E] mt-5" data-i="why_sub"></p>
       </div>
       <div class="grid md:grid-cols-3 gap-10 md:gap-12 text-center">
         <div data-reveal>
-          <h3 class="display text-2xl mb-3" data-i="why1_t"></h3>
+          <h3 class="display text-xl sm:text-2xl mb-2 sm:mb-3" data-i="why1_t"></h3>
           <p class="text-[#84827E] leading-relaxed" data-i="why1_b"></p>
         </div>
         <div data-reveal style="transition-delay:120ms">
-          <h3 class="display text-2xl mb-3" data-i="why2_t"></h3>
+          <h3 class="display text-xl sm:text-2xl mb-2 sm:mb-3" data-i="why2_t"></h3>
           <p class="text-[#84827E] leading-relaxed" data-i="why2_b"></p>
         </div>
         <div data-reveal style="transition-delay:240ms">
-          <h3 class="display text-2xl mb-3" data-i="why3_t"></h3>
+          <h3 class="display text-xl sm:text-2xl mb-2 sm:mb-3" data-i="why3_t"></h3>
           <p class="text-[#84827E] leading-relaxed" data-i="why3_b"></p>
         </div>
       </div>
@@ -490,8 +500,8 @@
   <section id="coaches" class="py-16 sm:py-24">
     <div class="max-w-7xl mx-auto px-6 sm:px-10">
       <div class="max-w-3xl mx-auto text-center mb-12" data-reveal>
-        <h2 class="display text-4xl sm:text-6xl leading-[1.02]" id="coach-title"></h2>
-        <p class="text-lg text-[#84827E] mt-6 max-w-xl mx-auto" data-i="coach_sub"></p>
+        <h2 class="display text-3xl sm:text-6xl leading-[1.02]" id="coach-title"></h2>
+        <p class="text-base sm:text-lg text-[#84827E] mt-6 max-w-xl mx-auto" data-i="coach_sub"></p>
       </div>
       <div id="coach-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto"></div>
     </div>
@@ -501,7 +511,7 @@
        emitted as FAQPage JSON-LD (see renderFaq) for rich results. -->
   <section id="faq" class="py-16 sm:py-24">
     <div class="max-w-3xl mx-auto px-6 sm:px-10">
-      <h2 class="display text-4xl sm:text-6xl leading-[1.02] text-center mb-12" id="faq-title"></h2>
+      <h2 class="display text-3xl sm:text-6xl leading-[1.02] text-center mb-12" id="faq-title"></h2>
       <div id="faq-list" class="space-y-3"></div>
     </div>
   </section>
@@ -514,8 +524,8 @@
     </div>
     <div class="max-w-4xl mx-auto px-6 sm:px-10 py-16 sm:py-24 text-center" data-reveal>
       <div class="flex justify-center mb-8"><span class="safran-mark" data-mark="56"></span></div>
-      <h2 class="display text-4xl sm:text-6xl leading-[1.02]" id="cta-title"></h2>
-      <p class="text-lg text-[#84827E] mt-6 max-w-lg mx-auto" data-i="cta_sub"></p>
+      <h2 class="display text-3xl sm:text-6xl leading-[1.02]" id="cta-title"></h2>
+      <p class="text-base sm:text-lg text-[#84827E] mt-6 max-w-lg mx-auto" data-i="cta_sub"></p>
       <!-- THE store badge: identical markup to the why-section one. -->
       <a href="https://apps.apple.com/app/id6794821755" data-store class="mt-10 inline-flex items-center gap-3 bg-black hover:bg-[#1a1a1a] active:scale-95 text-white px-7 py-3 rounded-2xl transition-all duration-300 shadow-xl shadow-black/20">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8.94-.19 1.84-.86 3.06-.8 1.53.12 2.68.72 3.44 1.83-3.17 1.9-2.66 6.07.42 7.32-.64 1.29-1.31 2.55-2 3.82ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>
@@ -978,7 +988,7 @@ function renderHeroPhone() {
 const heroScroll = (() => {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let runway, stage, copy, wrap, hint, chat;
-  let copyH = 0, phoneH = 0, phoneTop = 0, endScale = 1, endShift = 0, maxScroll = 0;
+  let copyH = 0, phoneH = 0, phoneTop = 0, endScale = 1, endShift = 0, maxScroll = 0, vh = innerHeight;
   const ZOOM_END = 0.35;
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
   const ease = (x) => 1 - Math.pow(1 - x, 3);
@@ -988,7 +998,7 @@ const heroScroll = (() => {
     hint = document.getElementById('hero-hint'); chat = wrap?.querySelector('.hero-chat');
     if (!runway || !wrap) return;
     wrap.style.transform = ''; copy.style.transform = '';
-    const vh = innerHeight;
+    vh = innerHeight;   // frozen here on purpose: see the resize handler
     copyH = copy.getBoundingClientRect().height;
     const pr = wrap.getBoundingClientRect(); const sr = stage.getBoundingClientRect();
     phoneH = pr.height; phoneTop = pr.top - sr.top;
@@ -1004,7 +1014,7 @@ const heroScroll = (() => {
   }
   function progress() {
     const r = runway.getBoundingClientRect();
-    return clamp(-r.top / (r.height - innerHeight), 0, 1);
+    return clamp(-r.top / (r.height - vh), 0, 1);
   }
   function apply() {
     if (!runway || !wrap || reduced) return;
@@ -1024,7 +1034,15 @@ const heroScroll = (() => {
   }
   let ticking = false;
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { apply(); ticking = false; }); } }, { passive: true });
-  addEventListener('resize', () => { measure(); apply(); });
+  // On iOS the URL bar collapsing fires resize with a height-only change;
+  // re-measuring there makes the phone jump. Only a width change (rotation,
+  // desktop resize) is a real layout change.
+  let lastW = innerWidth;
+  addEventListener('resize', () => {
+    if (innerWidth === lastW) return apply();
+    lastW = innerWidth; measure(); apply();
+  });
+  addEventListener('orientationchange', () => { setTimeout(() => { measure(); apply(); }, 200); });
   new ResizeObserver(() => { measure(); apply(); }).observe(document.getElementById('hero-phone'));
   return { measure, apply };
 })();
@@ -1081,10 +1099,15 @@ function showIncludeScreen(idx) {
   prev.classList.remove('is-on');
 }
 
+// Same frozen-height trick as heroScroll: iOS changes innerHeight while you
+// scroll (URL bar), which would make progress jump.
+let howVh = innerHeight;
+addEventListener('resize', () => { if (innerWidth !== howLastW) { howLastW = innerWidth; howVh = innerHeight; } });
+let howLastW = innerWidth;
 function howProgress() {
   const runway = document.querySelector('.how-runway');
   const r = runway.getBoundingClientRect();
-  return Math.min(Math.max(-r.top / (r.height - innerHeight), 0), 1);
+  return Math.min(Math.max(-r.top / (r.height - howVh), 0), 1);
 }
 
 function includeScroll() {
