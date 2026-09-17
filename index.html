@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Safran – Your AI health coach</title>
+<title>Safran: Your AI health coach</title>
 <meta name="description" content="Type what you ate, snap a photo or import a recipe from Instagram or TikTok. Safran counts the calories and adjusts your plan every week. No hype, real results." />
 <meta name="keywords" content="AI health coach, calorie tracker, food logging, macro tracker, meal plan, Safran" />
 <meta name="author" content="Safran" />
@@ -21,7 +21,7 @@
 
 <!-- Open Graph -->
 <meta property="og:site_name" content="Safran" />
-<meta property="og:title" content="Safran – Your AI health coach" />
+<meta property="og:title" content="Safran: Your AI health coach" />
 <meta property="og:description" content="Type what you ate, snap a photo or import a recipe from Instagram or TikTok. Safran counts the calories and adjusts your plan every week." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.safranapp.com/" />
@@ -33,7 +33,7 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Safran – Your AI health coach" />
+<meta name="twitter:title" content="Safran: Your AI health coach" />
 <meta name="twitter:description" content="Type what you ate, snap a photo or import a recipe from Instagram or TikTok. Safran counts the calories and adjusts your plan every week." />
 <meta name="twitter:image" content="https://www.safranapp.com/assets/og-image.png" />
 
@@ -188,9 +188,13 @@
        the title + dots that now sit between them and it; derive the width from
        that height so the frame can never run past the fold and collide with
        the next section. */
-    .how-phone { width: calc((100vh - 3.75rem - 6.75rem) * 1170 / 2472); max-width: 340px; }
-    @supports (height: 100svh) {
-      .how-phone { width: calc((100svh - 3.75rem - 6.75rem) * 1170 / 2472); }
+    /* Sized ONCE by sizeHowPhone() into --how-phone-w. Deriving it from live
+       viewport units made the frame resize mid-scroll: browser chrome that
+       hides on scroll changes vh, and in-app webviews (Instagram) report a
+       different height than Safari. The calc is only the no-JS fallback. */
+    .how-phone {
+      width: var(--how-phone-w, calc((100svh - 3.75rem - 6.75rem) * 1170 / 2472));
+      max-width: 340px;
     }
     #include-cards { min-height: 4.5rem; display: flex; align-items: center; justify-content: center; }
     /* .how-stage prefix: beats the base rules that follow later in this sheet.
@@ -1156,8 +1160,30 @@ function showIncludeScreen(idx) {
 // Same frozen-height trick as heroScroll: iOS changes innerHeight while you
 // scroll (URL bar), which would make progress jump.
 let howVh = innerHeight;
-addEventListener('resize', () => { if (innerWidth !== howLastW) { howLastW = innerWidth; howVh = innerHeight; } });
 let howLastW = innerWidth;
+
+/**
+ * Freeze the chapter phone's width. The viewport budget is: frozen height,
+ * minus the nav gap (3.75rem) and the title + dots above it (6.75rem); the
+ * rest is the frame, at the capture's 1170x2472 ratio.
+ */
+function sizeHowPhone() {
+  const budget = howVh - 60 - 108;
+  const w = Math.min(340, Math.max(180, (budget * 1170) / 2472));
+  document.documentElement.style.setProperty('--how-phone-w', `${Math.round(w)}px`);
+}
+sizeHowPhone();
+
+addEventListener('resize', () => {
+  // Width-only: a height change is the URL bar, not a layout change.
+  if (innerWidth === howLastW) return;
+  howLastW = innerWidth;
+  howVh = innerHeight;
+  sizeHowPhone();
+});
+addEventListener('orientationchange', () => {
+  setTimeout(() => { howVh = innerHeight; howLastW = innerWidth; sizeHowPhone(); }, 200);
+});
 function howProgress() {
   const runway = document.querySelector('.how-runway');
   const r = runway.getBoundingClientRect();
