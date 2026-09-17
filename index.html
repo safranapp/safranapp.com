@@ -1035,8 +1035,10 @@ const heroScroll = (() => {
     // it. Scale to fit that band (it may shrink on short windows), never above 1.18.
     const nav = document.querySelector('nav');
     const bandTop = (nav ? nav.getBoundingClientRect().bottom : 0) + 16;
-    const band = vh - bandTop - 24;
-    endScale = clamp(band / phoneH, 0.55, 1.18);
+    const band = vh - bandTop - 16;
+    // Ceiling raised from 1.18: on phones the band is ~1.2x the frame, so the
+    // old cap stopped the zoom just short and left a gap under the phone.
+    endScale = clamp(band / phoneH, 0.55, 1.35);
     // translate so the (top-origin) scaled phone is centred in the band
     endShift = bandTop + (band - phoneH * endScale) / 2 - phoneTop;
     maxScroll = chat ? chat.scrollHeight - chat.clientHeight : 0;
@@ -1051,7 +1053,9 @@ const heroScroll = (() => {
     const z = ease(clamp(p / ZOOM_END, 0, 1));
     const scale = 1 + (endScale - 1) * z;
     const outro = ease(clamp((p - 0.85) / 0.15, 0, 1));
-    wrap.style.transform = `translateY(${(endShift * z - 32 * outro).toFixed(1)}px) scale(${(scale * (1 - 0.04 * outro)).toFixed(3)})`;
+    // Outro: a small lift as the section hands over. Kept subtle — a bigger
+    // one reads as dead space under the phone at the end of the runway.
+    wrap.style.transform = `translateY(${(endShift * z - 10 * outro).toFixed(1)}px) scale(${(scale * (1 - 0.015 * outro)).toFixed(3)})`;
     copy.style.opacity = String(1 - z);
     copy.style.transform = `translateY(${(-40 * z).toFixed(1)}px)`;
     copy.style.pointerEvents = z > 0.6 ? 'none' : '';
