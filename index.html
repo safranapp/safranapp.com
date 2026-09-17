@@ -1167,9 +1167,15 @@ let howLastW = innerWidth;
  * minus the nav gap (3.75rem) and the title + dots above it (6.75rem); the
  * rest is the frame, at the capture's 1170x2472 ratio.
  */
+const HOW_PHONE = {
+  navGap: 60,     // .how-stage padding-top (3.75rem)
+  header: 84,     // chapter title + dots above the frame
+  bleed: 48,      // allowed to run past the fold: the capture is cropped anyway
+  max: 360,       // never wider than this, however tall the screen
+};
 function sizeHowPhone() {
-  const budget = howVh - 60 - 108;
-  const w = Math.min(340, Math.max(180, (budget * 1170) / 2472));
+  const budget = howVh - HOW_PHONE.navGap - HOW_PHONE.header + HOW_PHONE.bleed;
+  const w = Math.min(HOW_PHONE.max, Math.max(180, (budget * 1170) / 2472));
   document.documentElement.style.setProperty('--how-phone-w', `${Math.round(w)}px`);
 }
 sizeHowPhone();
