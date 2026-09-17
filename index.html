@@ -1017,7 +1017,7 @@ function renderHeroPhone() {
 const heroScroll = (() => {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let runway, stage, copy, wrap, hint, chat;
-  let copyH = 0, phoneH = 0, phoneTop = 0, endScale = 1, endShift = 0, maxScroll = 0, vh = innerHeight;
+  let copyH = 0, phoneH = 0, phoneTop = 0, endScale = 1, endShift = 0, maxScroll = 0, vh = stableVh();
   const ZOOM_END = 0.35;
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
   const ease = (x) => 1 - Math.pow(1 - x, 3);
@@ -1027,7 +1027,7 @@ const heroScroll = (() => {
     hint = document.getElementById('hero-hint'); chat = wrap?.querySelector('.hero-chat');
     if (!runway || !wrap) return;
     wrap.style.transform = ''; copy.style.transform = '';
-    vh = innerHeight;   // frozen here on purpose: see the resize handler
+    vh = stableVh();    // same number on every visit: see stableVh()
     copyH = copy.getBoundingClientRect().height;
     const pr = wrap.getBoundingClientRect(); const sr = stage.getBoundingClientRect();
     phoneH = pr.height; phoneTop = pr.top - sr.top;
@@ -1163,7 +1163,7 @@ function showIncludeScreen(idx) {
 
 // Same frozen-height trick as heroScroll: iOS changes innerHeight while you
 // scroll (URL bar), which would make progress jump.
-let howVh = innerHeight;
+let howVh = stableVh();
 let howLastW = innerWidth;
 
 /**
@@ -1194,11 +1194,11 @@ addEventListener('resize', () => {
   // Width-only: a height change is the URL bar, not a layout change.
   if (innerWidth === howLastW) return;
   howLastW = innerWidth;
-  howVh = innerHeight;
+  howVh = stableVh();
   sizeHowPhone();
 });
 addEventListener('orientationchange', () => {
-  setTimeout(() => { howVh = innerHeight; howLastW = innerWidth; sizeHowPhone(); }, 200);
+  setTimeout(() => { howVh = stableVh(); howLastW = innerWidth; sizeHowPhone(); }, 200);
 });
 function howProgress() {
   const runway = document.querySelector('.how-runway');
@@ -1422,6 +1422,26 @@ function renderShareRecipe(r) {
 }
 
 /* ============================ motion ============================ */
+
+/**
+ * Stable viewport height.
+ *
+ * innerHeight on iOS is ~85px larger when the URL bar is collapsed, and
+ * whether it is collapsed at measure time depends on how the page was
+ * entered: a fresh load has the bar out, a reload while scrolled or a back
+ * navigation does not. Measuring innerHeight therefore gave the hero phone a
+ * different zoom target on different visits - the "sometimes it looks
+ * smaller" effect. A 100svh probe always reports the with-chrome height.
+ */
+const vhProbe = document.createElement('div');
+vhProbe.style.cssText =
+  'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
+document.documentElement.appendChild(vhProbe);
+function stableVh() {
+  const h = vhProbe.getBoundingClientRect().height;
+  return h > 100 ? h : innerHeight;   // svh unsupported: innerHeight it is
+}
+
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const io = new IntersectionObserver(
   (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
