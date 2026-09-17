@@ -1086,6 +1086,7 @@ function setTitle(id, text) {
  * page to the middle of that chapter's slice. */
 let includeIdx = -1;
 function renderInclude() {
+  preloadIncludeShots();
   const items = t('include_items');
   document.getElementById('include-cards').innerHTML = items
     .map(
@@ -1107,21 +1108,49 @@ function renderInclude() {
 /* Real captures per chapter (assets/include-N.webp). Two <img> layers:
  * the incoming one fades in over the outgoing one. */
 let shotLayer = 0;
-function showIncludeScreen(idx) {
-  const shots = document.querySelectorAll('.include-shot');
-  const next = shots[shotLayer ^= 1], prev = shots[shotLayer ^ 1];
-  // Per-language capture when one exists (include-1-nl.webp), otherwise the
-  // shared file. Drop `include-N-<lang>.webp` into assets/ and it is picked
-  // up automatically; no code change needed.
+/** URL of a chapter capture: per-language when it exists, else the shared one. */
+function includeShotUrl(idx, shared) {
   // ?v= is the build id (stamped by build.sh) so a redeploy is never served
   // from a stale cache - including a cached 404 for a per-language file
   // that has since been added.
-  const shared = `/assets/include-${idx + 1}.webp?v=${BUILD_ID}`;
-  next.onerror = () => { next.onerror = null; next.src = shared; };
-  next.src = `/assets/include-${idx + 1}-${lang}.webp?v=${BUILD_ID}`;
+  return shared
+    ? `/assets/include-${idx + 1}.webp?v=${BUILD_ID}`
+    : `/assets/include-${idx + 1}-${lang}.webp?v=${BUILD_ID}`;
+}
+
+/**
+ * Warm the chapter captures for the CURRENT language.
+ *
+ * Without this the first chapter change cross-fades to a layer whose image
+ * has not arrived yet: you see the empty layer, then the image pops in. Later
+ * changes look right only because the file is cached by then.
+ */
+function preloadIncludeShots() {
+  const warm = () => t('include_items').forEach((_, i) => {
+    new Image().src = includeShotUrl(i, false);
+  });
+  if (window.requestIdleCallback) requestIdleCallback(warm, { timeout: 2000 });
+  else setTimeout(warm, 600);   // after the hero has had the network to itself
+}
+
+/** Guards the fade against a fast scroll: only the newest request may reveal. */
+let shotToken = 0;
+function showIncludeScreen(idx) {
+  const shots = document.querySelectorAll('.include-shot');
+  const next = shots[shotLayer ^= 1], prev = shots[shotLayer ^ 1];
+  const token = ++shotToken;
+  const reveal = () => {
+    if (token !== shotToken) return;   // a later chapter already won
+    next.classList.add('is-on');
+    prev.classList.remove('is-on');
+  };
   next.alt = t('include_items')[idx][0];
-  next.classList.add('is-on');
-  prev.classList.remove('is-on');
+  // Swap only once the pixels exist, otherwise the fade shows an empty layer.
+  next.onload = reveal;
+  next.onerror = () => { next.onerror = null; next.onload = reveal; next.src = includeShotUrl(idx, true); };
+  next.src = includeShotUrl(idx, false);
+  // A cached image can be complete before onload is ever attached.
+  if (next.complete && next.naturalWidth) reveal();
 }
 
 // Same frozen-height trick as heroScroll: iOS changes innerHeight while you
