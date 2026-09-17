@@ -1014,6 +1014,25 @@ function renderHeroPhone() {
  *              plays as the visitor scrolls (and rewinds when they scroll up)
  * Everything is measured, nothing hard-coded: the phone's final scale is
  * capped so it always fits the viewport with a margin. */
+/**
+ * Stable viewport height.
+ *
+ * innerHeight on iOS is ~85px larger when the URL bar is collapsed, and
+ * whether it is collapsed at measure time depends on how the page was
+ * entered: a fresh load has the bar out, a reload while scrolled or a back
+ * navigation does not. Measuring innerHeight therefore gave the hero phone a
+ * different zoom target on different visits - the "sometimes it looks
+ * smaller" effect. A 100svh probe always reports the with-chrome height.
+ */
+const vhProbe = document.createElement('div');
+vhProbe.style.cssText =
+  'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
+document.documentElement.appendChild(vhProbe);
+function stableVh() {
+  const h = vhProbe.getBoundingClientRect().height;
+  return h > 100 ? h : innerHeight;   // svh unsupported: innerHeight it is
+}
+
 const heroScroll = (() => {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let runway, stage, copy, wrap, hint, chat;
@@ -1422,26 +1441,6 @@ function renderShareRecipe(r) {
 }
 
 /* ============================ motion ============================ */
-
-/**
- * Stable viewport height.
- *
- * innerHeight on iOS is ~85px larger when the URL bar is collapsed, and
- * whether it is collapsed at measure time depends on how the page was
- * entered: a fresh load has the bar out, a reload while scrolled or a back
- * navigation does not. Measuring innerHeight therefore gave the hero phone a
- * different zoom target on different visits - the "sometimes it looks
- * smaller" effect. A 100svh probe always reports the with-chrome height.
- */
-const vhProbe = document.createElement('div');
-vhProbe.style.cssText =
-  'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
-document.documentElement.appendChild(vhProbe);
-function stableVh() {
-  const h = vhProbe.getBoundingClientRect().height;
-  return h > 100 ? h : innerHeight;   // svh unsupported: innerHeight it is
-}
-
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const io = new IntersectionObserver(
   (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
