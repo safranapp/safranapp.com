@@ -1174,19 +1174,18 @@ let howLastW = innerWidth;
 const HOW_PHONE = {
   navGap: 60,     // .how-stage padding-top (3.75rem)
   header: 100,    // chapter title (up to two lines) + dots above the frame
+  bleed: 40,      // may run this far past the fold; the capture is cropped anyway
+  max: 340,       // never wider than this, however tall the screen
 };
 /**
- * Match the hero phone, but never taller than the space left on screen.
- *
- * The hero width is the target so both sections read as the same device. The
- * height check is what stops the frame running into the next section: it may
- * only take what the viewport has after the nav gap and the title.
+ * As large as the screen allows. Overlap with the NEXT section is handled by
+ * that section's top padding (#why / #influencers, pt-32 on phones), not by
+ * shrinking the frame: the phone is the point of the section.
  */
 function sizeHowPhone() {
-  const heroWidth = innerWidth <= 640 ? 260 : 300;   // .hero-phone
-  const budget = howVh - HOW_PHONE.navGap - HOW_PHONE.header;
+  const budget = howVh - HOW_PHONE.navGap - HOW_PHONE.header + HOW_PHONE.bleed;
   const fits = (budget * 1170) / 2472;
-  const w = Math.max(180, Math.min(heroWidth, fits));
+  const w = Math.max(180, Math.min(HOW_PHONE.max, fits));
   document.documentElement.style.setProperty('--how-phone-w', `${Math.round(w)}px`);
 }
 sizeHowPhone();
