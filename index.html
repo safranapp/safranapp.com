@@ -1169,13 +1169,20 @@ let howLastW = innerWidth;
  */
 const HOW_PHONE = {
   navGap: 60,     // .how-stage padding-top (3.75rem)
-  header: 84,     // chapter title + dots above the frame
-  bleed: 48,      // allowed to run past the fold: the capture is cropped anyway
-  max: 360,       // never wider than this, however tall the screen
+  header: 100,    // chapter title (up to two lines) + dots above the frame
 };
+/**
+ * Match the hero phone, but never taller than the space left on screen.
+ *
+ * The hero width is the target so both sections read as the same device. The
+ * height check is what stops the frame running into the next section: it may
+ * only take what the viewport has after the nav gap and the title.
+ */
 function sizeHowPhone() {
-  const budget = howVh - HOW_PHONE.navGap - HOW_PHONE.header + HOW_PHONE.bleed;
-  const w = Math.min(HOW_PHONE.max, Math.max(180, (budget * 1170) / 2472));
+  const heroWidth = innerWidth <= 640 ? 260 : 300;   // .hero-phone
+  const budget = howVh - HOW_PHONE.navGap - HOW_PHONE.header;
+  const fits = (budget * 1170) / 2472;
+  const w = Math.max(180, Math.min(heroWidth, fits));
   document.documentElement.style.setProperty('--how-phone-w', `${Math.round(w)}px`);
 }
 sizeHowPhone();
