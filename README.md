@@ -28,11 +28,12 @@ deploys `dist/` on every push to `main`. One-time setup in that repo:
 - Privacy/terms text: copied from the app repo, `app/src/i18n/locales/{en,nl}.json`
   (`privacy.*`, `terms.*`). When the app text changes, re-sync (see git log
   for the one-off Python snippet) so the site and the app never disagree.
-- Screenshots: `assets/include-N-<lang>.webp` are the four chapters of "What
-  you can do", per language (660px wide, 60px shaved off the top; EN and NL
-  both exist for all four). The loader falls back to a shared
-  `include-N.webp` when a language file is missing, so a new language only
-  needs the captures it has.
+- Phone screens in "What you can do": drawn in HTML by the `SCREENS` array in
+  `index.html` (texts under `screens` per language), so there are no
+  captures to redo after an app release. Update them when a screen changes.
+- Coach figures: `assets/coach-<id>.webp` (cards) and `coach-<id>-sm.webp`
+  (in the phone screens), resized from the app's `assets/coaches/<id>/wave.png`.
+  Names, roles and quotes are copied from the app (`funnel.coach.*`).
 - Email header: `assets/email-header.png`, regenerate with
   `python3 scripts/email/render-header.py` from the app repo.
 - App Store link + support address: `APP_STORE_URL` / `SUPPORT_EMAIL`
