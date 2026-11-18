@@ -26,7 +26,9 @@ mkdir -p dist/nl
 sed -e 's#<meta property="og:image" content="https://www.safranapp.com/assets/og-image.png"#<meta property="og:image" content="https://www.safranapp.com/assets/og-image-nl.png"#' \
     -e 's#<meta name="twitter:image" content="https://www.safranapp.com/assets/og-image.png"#<meta name="twitter:image" content="https://www.safranapp.com/assets/og-image-nl.png"#' \
     -e 's#content="Safran: Your AI health coach"#content="Safran: Je AI health coach"#g' \
-    -e 's#content="Type what you ate, snap a photo or import a recipe from Instagram or TikTok. Safran counts the calories and adjusts your plan every week."#content="Typ wat je at, stuur een foto of importeer een recept van Instagram of TikTok. Safran telt de calorieën en past je plan elke week aan."#g' \
+    -e 's#<title>Safran: Your AI health coach</title>#<title>Safran: Je AI health coach</title>#' \
+    -e 's#<html lang="en">#<html lang="nl">#' \
+    -e 's#content="Send a photo, scan a barcode or type what you ate. Pick the coach who suits you and get check-ins, week menus and a grocery list that fit your goal."#content="Stuur een foto, scan een barcode of typ wat je at. Kies de coach die bij je past en krijg check-ins, weekmenu’s en een boodschappenlijst die bij je doel passen."#g' \
     -e 's#<meta property="og:locale" content="en_US" />#<meta property="og:locale" content="nl_NL" />#' \
     -e 's#<link rel="canonical" href="https://www.safranapp.com/" />#<link rel="canonical" href="https://www.safranapp.com/nl" />#' \
     dist/index.html > dist/nl/index.html
